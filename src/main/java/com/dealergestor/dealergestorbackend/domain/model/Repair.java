@@ -14,10 +14,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class NoteModel {
+public class Repair {
 
-    private Long noteId;
-    private String title;
-    private String content;
-    private String createdAt;
+    private Long repairId;
+    private String status;
+    private String date;
+    private Part part;
+    private CompanyUser companyUser;
 }

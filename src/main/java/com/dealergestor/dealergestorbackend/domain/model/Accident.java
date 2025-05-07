@@ -9,19 +9,13 @@ package com.dealergestor.dealergestorbackend.domain.model;
 
 import lombok.*;
 
-import java.util.List;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class CompanyUserModel {
+public class Accident extends Repair {
 
-    private Long companyUserId;
-    private String username;
-    private String password;
-    private String role;
-    private boolean enabled;
-    private List<NoteModel> notes;
+    private String insuranceCompany;
+    private String location;
 }

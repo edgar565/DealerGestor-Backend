@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.AppointmentModel;
+import com.dealergestor.dealergestorbackend.domain.model.Appointment;
 
 import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentModel> findAll();
-    AppointmentModel findById(Long id);
-    AppointmentModel create(AppointmentModel request);
-    AppointmentModel update(Long id, AppointmentModel request);
+    List<Appointment> findAll();
+    Appointment findById(Long id);
+    Appointment create(Appointment request);
+    Appointment update(Long id, Appointment request);
     void delete(Long id);
 }

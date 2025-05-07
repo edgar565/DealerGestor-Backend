@@ -20,7 +20,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "part")
-public class Part {
+public class PartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,5 +115,5 @@ public class Part {
 
     @OneToOne
     @JoinColumn(name = "repair_id")
-    private Repair repair;
+    private RepairEntity repairEntity;
 }

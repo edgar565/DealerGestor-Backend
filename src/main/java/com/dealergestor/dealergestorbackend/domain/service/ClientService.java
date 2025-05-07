@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.ClientModel;
+import com.dealergestor.dealergestorbackend.domain.model.Client;
 
 import java.util.List;
 
 public interface ClientService {
 
-    List<ClientModel> findAll();
-    ClientModel findById(Long id);
-    ClientModel create(ClientModel request);
-    ClientModel update(Long id, ClientModel request);
+    List<Client> findAll();
+    Client findById(Long id);
+    Client create(Client request);
+    Client update(Long id, Client request);
     void delete(Long id);
 }

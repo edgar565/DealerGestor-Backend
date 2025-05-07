@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.AccidentModel;
+import com.dealergestor.dealergestorbackend.domain.model.Accident;
 
 import java.util.List;
 
 public interface AccidentService {
 
-    List<AccidentModel> findAll();
-    AccidentModel findById(Long id);
-    AccidentModel create(AccidentModel request);
-    AccidentModel update(Long id, AccidentModel request);
+    List<Accident> findAll();
+    Accident findById(Long id);
+    Accident create(Accident request);
+    Accident update(Long id, Accident request);
     void delete(Long id);
 }

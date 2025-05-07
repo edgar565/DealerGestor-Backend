@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.VehicleModel;
+import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 
 import java.util.List;
 
 public interface VehicleService {
 
-    List<VehicleModel> findAll();
-    VehicleModel findById(Long id);
-    VehicleModel create(VehicleModel request);
-    VehicleModel update(Long id, VehicleModel request);
+    List<Vehicle> findAll();
+    Vehicle findById(Long id);
+    Vehicle create(Vehicle request);
+    Vehicle update(Long id, Vehicle request);
     void delete(Long id);
 }

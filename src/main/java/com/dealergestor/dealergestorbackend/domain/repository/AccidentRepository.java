@@ -7,11 +7,11 @@
 
 package com.dealergestor.dealergestorbackend.domain.repository;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Accident;
+import com.dealergestor.dealergestorbackend.domain.entity.AccidentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccidentRepository extends JpaRepository<Accident, Long> {
+public interface AccidentRepository extends JpaRepository<AccidentEntity, Long> {
 
 }

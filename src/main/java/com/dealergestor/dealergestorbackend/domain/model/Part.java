@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class PartModel {
+public class Part {
 
     private Long partId;
     private String keychain;

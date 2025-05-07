@@ -14,8 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class AccidentModel extends RepairModel {
+public class Note {
 
-    private String insuranceCompany;
-    private String location;
+    private Long noteId;
+    private String title;
+    private String content;
+    private String createdAt;
 }

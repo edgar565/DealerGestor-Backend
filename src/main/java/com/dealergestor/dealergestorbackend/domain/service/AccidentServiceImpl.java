@@ -7,9 +7,9 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Accident;
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
-import com.dealergestor.dealergestorbackend.domain.model.AccidentModel;
+import com.dealergestor.dealergestorbackend.domain.entity.AccidentEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
+import com.dealergestor.dealergestorbackend.domain.model.Accident;
 import com.dealergestor.dealergestorbackend.domain.repository.AccidentRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
@@ -32,53 +32,51 @@ public class AccidentServiceImpl implements AccidentService {
     }
 
     @Override
-    public List<AccidentModel> findAll() {
+    public List<Accident> findAll() {
         return accidentRepository.findAll().stream()
-                .map(this::toModel)
+                .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AccidentModel findById(Long id) {
-        Accident accident = accidentRepository.findById(id)
+    public Accident findById(Long id) {
+        AccidentEntity accidentEntity = accidentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Accident not found"));
-        return modelMapperUtil.toModel(accident);
+        return modelMapperUtil.toModel(accidentEntity);
     }
 
     @Override
-    public AccidentModel create(AccidentModel model) {
-        Vehicle vehicle = vehicleRepository.findById(model.getVehicleId())
+    public Accident create(Accident model) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        Accident accident = new Accident();
-        accident.setStartDate(LocalDateTime.parse(model.getStartDate()));
-        accident.setEndDate(LocalDateTime.parse(model.getEndDate()));
-        accident.setDescription(model.getDescription());
-        accident.setStatus(model.getStatus());
-        accident.setVehicle(vehicle);
-        accident.setPoliceReportNumber(model.getPoliceReportNumber());
-        accident.setAtFault(model.isAtFault());
+        AccidentEntity accidentEntity = new AccidentEntity();
+        accidentEntity.setStartDate(LocalDateTime.parse(model.getStartDate()));
+        accidentEntity.setEndDate(LocalDateTime.parse(model.getEndDate()));
+        accidentEntity.setDescription(model.getDescription());
+        accidentEntity.setStatus(model.getStatus());
+        accidentEntity.setVehicleEntity(vehicleEntity);
+        accidentEntity.setPoliceReportNumber(model.getPoliceReportNumber());
+        accidentEntity.setAtFault(model.isAtFault());
 
-        return modelMapperUtil.toModel(accidentRepository.save(accident));
+        return modelMapperUtil.toModel(accidentRepository.save(accidentEntity));
     }
 
     @Override
-    public AccidentModel update(Long id, AccidentModel model) {
-        Accident accident = accidentRepository.findById(id)
+    public Accident update(Long id, Accident model) {
+        AccidentEntity accidentEntity = accidentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Accident not found"));
 
-        Vehicle vehicle = vehicleRepository.findById(model.getVehicleId())
+        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        accident.setStartDate(LocalDateTime.parse(model.getStartDate()));
-        accident.setEndDate(LocalDateTime.parse(model.getEndDate()));
-        accident.setDescription(model.getDescription());
-        accident.setStatus(model.getStatus());
-        accident.setVehicle(vehicle);
-        accident.setPoliceReportNumber(model.getPoliceReportNumber());
-        accident.setAtFault(model.isAtFault());
+        accidentEntity.setDescription(model.getDescription());
+        accidentEntity.setStatus(model.getStatus());
+        accidentEntity.setVehicleEntity(vehicleEntity);
+        accidentEntity.setPoliceReportNumber(model.getPoliceReportNumber());
+        accidentEntity.setAtFault(model.isAtFault());
 
-        return modelMapperUtil.toModel(accidentRepository.save(accident));
+        return modelMapperUtil.toModel(accidentRepository.save(accidentEntity));
     }
 
     @Override

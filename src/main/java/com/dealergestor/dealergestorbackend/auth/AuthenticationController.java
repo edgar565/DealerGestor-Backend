@@ -7,29 +7,31 @@
 
 package com.dealergestor.dealergestorbackend.auth;
 
-import com.dealergestor.dealergestorbackend.security.JwtService;
+import com.dealergestor.dealergestorbackend.auth.dto.AuthRequest;
+import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
+import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
+import com.dealergestor.dealergestorbackend.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    private final JwtService jwtService;
-    private final UserService userService;
+    private final AuthenticationService authService;
 
-    @Autowired
-    public AuthenticationController(JwtService jwtService, UserService userService) {
-        this.jwtService = jwtService;
-        this.userService = userService;
+    public AuthenticationController(AuthenticationService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        // Aquí se valida el usuario (en UserService o un repositorio)
-        if (userService.isValidUser(loginRequest.getUsername(), loginRequest.getPassword())) {
-            return jwtService.generateToken(loginRequest.getUsername());
-        }
-        throw new UnauthorizedException("Invalid credentials");
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 }

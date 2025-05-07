@@ -17,7 +17,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "vehicle")
-public class Vehicle {
+public class VehicleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +35,11 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;
+    private ClientEntity clientEntity;
 
     @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Repair repair;
+    private RepairEntity repairEntity;
 
     @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Appointment appointment;
+    private AppointmentEntity appointmentEntity;
 }

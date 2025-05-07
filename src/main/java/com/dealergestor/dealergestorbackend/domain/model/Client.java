@@ -9,14 +9,17 @@ package com.dealergestor.dealergestorbackend.domain.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class AppointmentModel {
+public class Client {
 
-    private Long appointmentId;
-    private String dateTime;
-    private String task;
+    private Long clientId;
+    private String name;
+    private String phone;
+    private List<Vehicle> vehicles;
 }

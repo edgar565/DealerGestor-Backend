@@ -7,13 +7,13 @@
 
 package com.dealergestor.dealergestorbackend.domain.repository;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Appointment;
+import com.dealergestor.dealergestorbackend.domain.entity.AppointmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
 
-    boolean existsByVehicle(Vehicle vehicle);
+    boolean existsByVehicle(VehicleEntity vehicleEntity);
 }

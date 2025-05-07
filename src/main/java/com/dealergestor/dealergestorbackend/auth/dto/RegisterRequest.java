@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.auth.dto;
 
+import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import lombok.*;
 
 @Setter
@@ -18,4 +19,5 @@ public class RegisterRequest {
 
     private String username;
     private String password;
+    private CompanyUserEntity.Role role;
 }

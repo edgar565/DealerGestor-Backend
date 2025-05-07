@@ -16,10 +16,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ClientModel {
+public class CompanyUser {
 
-    private Long clientId;
-    private String name;
-    private String phone;
-    private List<VehicleModel> vehicles;
+    private Long companyUserId;
+    private String username;
+    private String password;
+    private String role;
+    private boolean enabled;
+    private List<Note> notes;
 }

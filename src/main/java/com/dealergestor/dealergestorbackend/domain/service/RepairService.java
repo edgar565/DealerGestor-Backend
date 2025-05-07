@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.RepairModel;
+import com.dealergestor.dealergestorbackend.domain.model.Repair;
 
 import java.util.List;
 
 public interface RepairService {
 
-    List<RepairModel> findAll();
-    RepairModel findById(Long id);
-    RepairModel create(RepairModel request);
-    RepairModel update(Long id, RepairModel request);
+    List<Repair> findAll();
+    Repair findById(Long id);
+    Repair create(Repair request);
+    Repair update(Long id, Repair request);
     void delete(Long id);
 }

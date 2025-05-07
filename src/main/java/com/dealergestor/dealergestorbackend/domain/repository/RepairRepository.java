@@ -7,13 +7,13 @@
 
 package com.dealergestor.dealergestorbackend.domain.repository;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Repair;
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
+import com.dealergestor.dealergestorbackend.domain.entity.RepairEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepairRepository extends JpaRepository<Repair, Long> {
+public interface RepairRepository extends JpaRepository<RepairEntity, Long> {
 
-    boolean existsByVehicle(Vehicle vehicle);
+    boolean existsByVehicle(VehicleEntity vehicleEntity);
 }

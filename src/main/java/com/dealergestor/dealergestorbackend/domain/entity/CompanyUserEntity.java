@@ -10,7 +10,6 @@ package com.dealergestor.dealergestorbackend.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -20,7 +19,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "company_user")
-public class CompanyUser {
+public class CompanyUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +46,5 @@ public class CompanyUser {
     private boolean enabled;
 
     @OneToMany(mappedBy = "company_user_id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Note> notes;
+    private List<NoteEntity> noteEntities;
 }

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "repair")
-public class Repair {
+public class RepairEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,12 +43,12 @@ public class Repair {
 
     @OneToOne
     @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 
     @OneToOne(mappedBy = "repair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Part part;
+    private PartEntity partEntity;
 
     @OneToOne
     @JoinColumn(name = "operator_id")
-    private CompanyUser operator;
+    private CompanyUserEntity operator;
 }

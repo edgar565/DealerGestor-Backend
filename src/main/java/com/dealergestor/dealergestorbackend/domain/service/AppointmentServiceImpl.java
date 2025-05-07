@@ -7,9 +7,9 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Appointment;
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
-import com.dealergestor.dealergestorbackend.domain.model.AppointmentModel;
+import com.dealergestor.dealergestorbackend.domain.entity.AppointmentEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
+import com.dealergestor.dealergestorbackend.domain.model.Appointment;
 import com.dealergestor.dealergestorbackend.domain.repository.AppointmentRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.RepairRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
@@ -41,55 +41,55 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentModel> findAll() {
+    public List<Appointment> findAll() {
         return appointmentRepository.findAll().stream()
-                .map(this::toModel)
+                .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AppointmentModel findById(Long id) {
-        Appointment appointment = appointmentRepository.findById(id)
+    public Appointment findById(Long id) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
-        return modelMapperUtil.toModel(appointment);
+        return modelMapperUtil.toModel(appointmentEntity);
     }
 
     @Override
-    public AppointmentModel create(AppointmentModel model) {
-        Appointment appointmentEntity = appointmentRepository.findById(model.getAppointmentId())
+    public Appointment create(Appointment model) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(model.getAppointmentId())
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
-        Vehicle vehicle = vehicleRepository.findById(appointmentEntity.getVehicle().getVehicleId())
+        VehicleEntity vehicleEntity = vehicleRepository.findById(appointmentEntity.getVehicleEntity().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        boolean hasAppointment = appointmentRepository.existsByVehicle(vehicle);
-        boolean hasRepair = repairRepository.existsByVehicle(vehicle);
+        boolean hasAppointment = appointmentRepository.existsByVehicle(vehicleEntity);
+        boolean hasRepair = repairRepository.existsByVehicle(vehicleEntity);
 
         if (hasAppointment || hasRepair) {
             throw new RuntimeException("This vehicle already has an active appointment or repair.");
         }
 
-        Appointment appointment = new Appointment();
+        AppointmentEntity appointment = new AppointmentEntity();
         appointment.setDateTime(LocalDateTime.parse(model.getDateTime()));
-        appointment.setTask(Appointment.Task.valueOf(model.getTask().toUpperCase()));
-        appointment.setVehicle(vehicle);
+        appointment.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
+        appointment.setVehicleEntity(vehicleEntity);
 
         return modelMapperUtil.toModel(appointmentRepository.save(appointment));
     }
 
     @Override
-    public AppointmentModel update(Long id, AppointmentModel model) {
-        Appointment appointment = appointmentRepository.findById(id)
+    public Appointment update(Long id, Appointment model) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
-        Vehicle vehicle = vehicleRepository.findById(appointment.getVehicle().getVehicleId())
+        VehicleEntity vehicleEntity = vehicleRepository.findById(appointmentEntity.getVehicleEntity().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        appointment.setDateTime(LocalDateTime.parse(model.getDateTime()));
-        appointment.setTask(Appointment.Task.valueOf(model.getTask().toUpperCase()));
-        appointment.setVehicle(vehicle);
+        appointmentEntity.setDateTime(LocalDateTime.parse(model.getDateTime()));
+        appointmentEntity.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
+        appointmentEntity.setVehicleEntity(vehicleEntity);
 
-        return modelMapperUtil.toModel(appointmentRepository.save(appointment));
+        return modelMapperUtil.toModel(appointmentRepository.save(appointmentEntity));
     }
 
     @Override

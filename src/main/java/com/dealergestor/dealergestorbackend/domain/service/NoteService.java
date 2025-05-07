@@ -7,14 +7,14 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.NoteModel;
+import com.dealergestor.dealergestorbackend.domain.model.Note;
 
 import java.util.List;
 
 public interface NoteService {
 
-    List<NoteModel> findAll();
-    NoteModel findById(Long id);
-    NoteModel create(NoteModel request);
+    List<Note> findAll();
+    Note findById(Long id);
+    Note create(Note request);
     void delete(Long id);
 }

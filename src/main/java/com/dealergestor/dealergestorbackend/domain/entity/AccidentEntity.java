@@ -18,7 +18,7 @@ import lombok.*;
 @Entity
 @Table(name = "accident")
 @PrimaryKeyJoinColumn(name = "repair_id")
-public class Accident extends Repair {
+public class AccidentEntity extends RepairEntity {
 
     @Column(name = "insurance_company")
     private String insuranceCompany;

@@ -7,8 +7,8 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
-import com.dealergestor.dealergestorbackend.domain.model.VehicleModel;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
+import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,41 +27,41 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public List<VehicleModel> findAll() {
+    public List<Vehicle> findAll() {
         return vehicleRepository.findAll().stream()
-                .map(this::toModel)
+                .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public VehicleModel findById(Long id) {
-        Vehicle vehicle = vehicleRepository.findById(id)
+    public Vehicle findById(Long id) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
-        return modelMapperUtil.toModel(vehicle);
+        return modelMapperUtil.toModel(vehicleEntity);
     }
 
     @Override
-    public VehicleModel create(VehicleModel model) {
+    public Vehicle create(Vehicle model) {
         if (vehicleRepository.existsByLicensePlate(model.getLicensePlate())) {
             throw new RuntimeException("License plate already exists");
         }
 
-        Vehicle vehicle = new Vehicle();
-        vehicle.setLicensePlate(model.getLicensePlate());
-        vehicle.setBrand(model.getBrand());
-        vehicle.setModel(model.getModel());
-        return modelMapperUtil.toModel(vehicleRepository.save(vehicle));
+        VehicleEntity vehicleEntity = new VehicleEntity();
+        vehicleEntity.setLicensePlate(model.getLicensePlate());
+        vehicleEntity.setBrand(model.getBrand());
+        vehicleEntity.setModel(model.getModel());
+        return modelMapperUtil.toModel(vehicleRepository.save(vehicleEntity));
     }
 
     @Override
-    public VehicleModel update(Long id, VehicleModel model) {
-        Vehicle vehicle = vehicleRepository.findById(id)
+    public Vehicle update(Long id, Vehicle model) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        vehicle.setLicensePlate(model.getLicensePlate());
-        vehicle.setBrand(model.getBrand());
-        vehicle.setModel(model.getModel());
-        return modelMapperUtil.toModel(vehicleRepository.save(vehicle));
+        vehicleEntity.setLicensePlate(model.getLicensePlate());
+        vehicleEntity.setBrand(model.getBrand());
+        vehicleEntity.setModel(model.getModel());
+        return modelMapperUtil.toModel(vehicleRepository.save(vehicleEntity));
     }
 
     @Override

@@ -7,10 +7,10 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.entity.CompanyUser;
-import com.dealergestor.dealergestorbackend.domain.entity.Note;
-import com.dealergestor.dealergestorbackend.domain.entity.Vehicle;
-import com.dealergestor.dealergestorbackend.domain.model.NoteModel;
+import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.NoteEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
+import com.dealergestor.dealergestorbackend.domain.model.Note;
 import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.NoteRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
@@ -36,34 +36,34 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<NoteModel> findAll() {
+    public List<Note> findAll() {
         return noteRepository.findAll().stream()
-                .map(this::toModel)
+                .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public NoteModel findById(Long id) {
-        Note note = noteRepository.findById(id)
+    public Note findById(Long id) {
+        NoteEntity noteEntity = noteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Note not found"));
-        return modelMapperUtil.toModel(note);
+        return modelMapperUtil.toModel(noteEntity);
     }
 
     @Override
-    public NoteModel create(NoteModel model) {
-        Vehicle vehicle = vehicleRepository.findById(model.getVehicleId())
+    public Note create(Note model) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        CompanyUser user = companyUserRepository.findById(model.getUserId())
+        CompanyUserEntity user = companyUserRepository.findById(model.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Note note = new Note();
-        note.setContent(model.getContent());
-        note.setCreatedAt(LocalDateTime.now());
-        note.setVehicle(vehicle);
-        note.setCreatedBy(user);
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setContent(model.getContent());
+        noteEntity.setCreatedAt(LocalDateTime.now());
+        noteEntity.setVehicle(vehicleEntity);
+        noteEntity.setCreatedBy(user);
 
-        return modelMapperUtil.toModel(noteRepository.save(note));
+        return modelMapperUtil.toModel(noteRepository.save(noteEntity));
     }
 
     @Override

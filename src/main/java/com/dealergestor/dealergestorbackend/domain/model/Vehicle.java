@@ -14,12 +14,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class VehicleModel {
+public class Vehicle {
 
     private Long vehicleId;
     private String licensePlate;
     private String brand;
     private String model;
-    private RepairModel repairModel;
-    private AppointmentModel appointmentModel;
+    private Repair repair;
+    private Appointment appointment;
 }

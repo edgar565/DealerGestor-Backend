@@ -7,15 +7,15 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.model.PartModel;
+import com.dealergestor.dealergestorbackend.domain.model.Part;
 
 import java.util.List;
 
 public interface PartService {
 
-    List<PartModel> findAll();
-    PartModel findById(Long id);
-    PartModel create(PartModel request);
-    PartModel update(Long id, PartModel request);
+    List<Part> findAll();
+    Part findById(Long id);
+    Part create(Part request);
+    Part update(Long id, Part request);
     void delete(Long id);
 }

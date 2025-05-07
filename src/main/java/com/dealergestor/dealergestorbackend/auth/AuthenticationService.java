@@ -7,73 +7,55 @@
 
 package com.dealergestor.dealergestorbackend.auth;
 
-import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.auth.dto.AuthRequest;
 import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
 import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
-import com.dealergestor.dealergestorbackend.domain.entity.CompanyUser;
-import com.dealergestor.dealergestorbackend.security.JwtService;
+import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
+import com.dealergestor.dealergestorbackend.jwt.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {
 
-    private final DealerGestorBackendManager dealerGestorBackendManager;
+    private final CompanyUserRepository companyUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(
-            DealerGestorBackendManager dealerGestorBackendManager,
-            PasswordEncoder passwordEncoder,
-            JwtService jwtService,
-            AuthenticationManager authenticationManager
-    ) {
-        this.dealerGestorBackendManager = dealerGestorBackendManager;
+    public AuthenticationService(CompanyUserRepository companyUserRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.companyUserRepository = companyUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
 
-    // LOGIN
-    public AuthResponse authenticate(AuthRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
-
-        CompanyUser user = dealerGestorBackendManager.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        String jwtToken = jwtService.generateToken(user);
-
-        return new AuthResponse(jwtToken);
+    public AuthResponse register(RegisterRequest request) {
+        CompanyUserEntity user = new CompanyUserEntity();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+        user.setEnabled(true);
+        companyUserRepository.save(user);
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(token);
     }
 
-    // REGISTRO DEL PRIMER ADMIN
-    public AuthResponse registerAdmin(RegisterRequest request) {
-        Optional<CompanyUser> existingUser = dealerGestorBackendManager.findByUsername(request.getUsername());
-        if (existingUser.isPresent()) {
-            throw new RuntimeException("Username already taken");
+    public AuthResponse authenticate(AuthRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+
+        CompanyUserEntity user = companyUserRepository.findByUsername(request.getUsername());
+        if (user == null) {
+            throw new RuntimeException("User not found");
         }
 
-        CompanyUser admin = new CompanyUser();
-        admin.setUsername(request.getUsername());
-        admin.setPassword(passwordEncoder.encode(request.getPassword()));
-        admin.setRole("ADMIN");
-        admin.setEnabled(true);
-
-        dealerGestorBackendManager.saveUser(admin);
-
-        String jwtToken = jwtService.generateToken(admin);
-
-        return new AuthResponse(jwtToken);
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(token);
     }
 }

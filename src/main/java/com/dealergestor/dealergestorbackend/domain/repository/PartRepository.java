@@ -7,11 +7,11 @@
 
 package com.dealergestor.dealergestorbackend.domain.repository;
 
-import com.dealergestor.dealergestorbackend.domain.entity.Part;
+import com.dealergestor.dealergestorbackend.domain.entity.PartEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PartRepository extends JpaRepository<Part, Long> {
+public interface PartRepository extends JpaRepository<PartEntity, Long> {
 
 }

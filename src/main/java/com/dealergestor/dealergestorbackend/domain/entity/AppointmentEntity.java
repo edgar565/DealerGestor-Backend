@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointment")
-public class Appointment {
+public class AppointmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +41,5 @@ public class Appointment {
 
     @OneToOne
     @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 }

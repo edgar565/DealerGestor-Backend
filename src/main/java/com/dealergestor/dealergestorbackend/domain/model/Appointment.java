@@ -14,11 +14,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class RepairModel {
+public class Appointment {
 
-    private Long repairId;
-    private String status;
-    private String date;
-    private PartModel partModel;
-    private CompanyUserModel companyUserModel;
+    private Long appointmentId;
+    private String dateTime;
+    private String task;
 }

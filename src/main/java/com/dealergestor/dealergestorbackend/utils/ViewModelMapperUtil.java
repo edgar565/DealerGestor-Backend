@@ -128,6 +128,16 @@ public class ViewModelMapperUtil {
         return viewModel;
     }
 
+    public CompanyViewModel toViewModel(Company company) {
+        CompanyViewModel viewModel = new CompanyViewModel();
+        viewModel.setNameCompany(company.getNameCompany());
+        viewModel.setPrimaryColor(company.getPrimaryColor());
+        viewModel.setSecondaryColor(company.getSecondaryColor());
+        viewModel.setLogoPath(company.getLogoPath());
+        viewModel.setWhatsappApiKey(company.getWhatsappApiKey());
+        return viewModel;
+    }
+
 
     /**
      *  THE VIEWMODEL A MODEL
@@ -156,6 +166,19 @@ public class ViewModelMapperUtil {
         model.setDate(repairPostViewModel.getDate());
         model.setPart(toModel(repairPostViewModel.getPartViewModel()));
         model.setOperator(toModel(repairPostViewModel.getOperator()));
+        return model;
+    }
+
+    public Accident toModel(AccidentPostViewModel accidentPostViewModel) {
+        Accident model = new Accident();
+        model.setRepairId(accidentPostViewModel.getRepairId());
+        model.setStatus(accidentPostViewModel.getStatus());
+        model.setDate(accidentPostViewModel.getDate());
+        model.setPart(toModel(accidentPostViewModel.getPartViewModel()));
+        model.setOperator(toModel(accidentPostViewModel.getOperator()));
+        model.setVehicle(toModel(accidentPostViewModel.getVehicleViewModel()));
+        model.setInsuranceCompany(accidentPostViewModel.getInsuranceCompany());
+        model.setLocation(accidentPostViewModel.getLocation());
         return model;
     }
 
@@ -226,6 +249,15 @@ public class ViewModelMapperUtil {
         model.setAppointmentId(appointmentViewModel.getAppointmentId());
         model.setDateTime(appointmentViewModel.getDateTime());
         model.setTask(appointmentViewModel.getTask());
+        return model;
+    }
+
+    public CompanyUser toModel(CompanyUserPostViewModel companyUserPostViewModel) {
+        CompanyUser model = new CompanyUser();
+        model.setCompanyUserId(companyUserPostViewModel.getCompanyUserId());
+        model.setUsername(companyUserPostViewModel.getUsername());
+        model.setPassword(companyUserPostViewModel.getPassword());
+        model.setRole(companyUserPostViewModel.getRole());
         return model;
     }
 }

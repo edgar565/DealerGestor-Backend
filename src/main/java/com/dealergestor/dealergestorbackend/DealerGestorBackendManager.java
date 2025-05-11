@@ -11,7 +11,7 @@ import com.dealergestor.dealergestorbackend.domain.model.*;
 import com.dealergestor.dealergestorbackend.domain.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,8 +26,9 @@ public class DealerGestorBackendManager {
     private final PartService partService;
     private final RepairService repairService;
     private final VehicleService vehicleService;
+    private final CompanyService companyService;
 
-    public DealerGestorBackendManager(AccidentService accidentService, AppointmentService appointmentService, ClientService clientService, CompanyUserService companyUserService, NoteService noteService, PartService partService, RepairService repairService, VehicleService vehicleService) {
+    public DealerGestorBackendManager(AccidentService accidentService, AppointmentService appointmentService, ClientService clientService, CompanyUserService companyUserService, NoteService noteService, PartService partService, RepairService repairService, VehicleService vehicleService, CompanyService companyService) {
         this.accidentService = accidentService;
         this.appointmentService = appointmentService;
         this.clientService = clientService;
@@ -36,8 +37,8 @@ public class DealerGestorBackendManager {
         this.partService = partService;
         this.repairService = repairService;
         this.vehicleService = vehicleService;
+        this.companyService = companyService;
     }
-
 
     /**
      * ACCIDENT
@@ -54,7 +55,7 @@ public class DealerGestorBackendManager {
         return accidentService.findAccidentById(id);
     }
 
-    public Accident saveAccident(@RequestBody Accident accident) {
+    public Accident saveAccident(Accident accident) {
         return accidentService.saveAccident(accident);
     }
 
@@ -116,6 +117,30 @@ public class DealerGestorBackendManager {
 
     public void deleteClient(Long id) {
         clientService.deleteClient(id);
+    }
+
+
+    /**
+     * COMPANY USER
+     **/
+    public List<CompanyUser> findAllCompanyUsers() {
+        return companyUserService.findAllCompanyUsers();
+    }
+
+    public CompanyUser findCompanyUserById(Long id) {
+        return companyUserService.findCompanyUserById(id);
+    }
+
+    public CompanyUser saveCompanyUser(CompanyUser companyUser) {
+        return companyUserService.saveCompanyUser(companyUser);
+    }
+
+    public CompanyUser updateCompanyUser(Long id, CompanyUser companyUser) {
+        return companyUserService.updateCompanyUser(id, companyUser);
+    }
+
+    public void deleteCompanyUser(Long id) {
+        companyUserService.deleteCompanyUser(id);
     }
 
 
@@ -221,4 +246,14 @@ public class DealerGestorBackendManager {
     public void deleteVehicle(Long id) {
         vehicleService.deleteVehicle(id);
     }
+
+
+    /**
+     * COMPANY
+     **/
+    public Company updateCompanyLogo(Long companyId, MultipartFile logoFile) {
+        return companyService.updateCompanyLogo(companyId, logoFile);
+    }
+
+
 }

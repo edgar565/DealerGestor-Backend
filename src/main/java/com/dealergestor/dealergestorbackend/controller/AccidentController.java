@@ -62,6 +62,5 @@ public class AccidentController {
     public ResponseEntity<?> deleteAccident(@PathVariable Long id) {
         dealerGestorBackendManager.deleteAccident(id);
         return ResponseEntity.ok().build();
-
     }
 }

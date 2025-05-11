@@ -130,4 +130,15 @@ public class ModelMapperUtil {
         model.setCreatedAt(noteEntity.getCreatedAt());
         return model;
     }
+
+    public Company toModel(CompanyEntity companyEntity) {
+        Company model = new Company();
+        model.setCompanyId(companyEntity.getCompanyId());
+        model.setNameCompany(companyEntity.getNameCompany());
+        model.setPrimaryColor(companyEntity.getPrimaryColor());
+        model.setSecondaryColor(companyEntity.getSecondaryColor());
+        model.setLogoPath(companyEntity.getLogoPath());
+        model.setWhatsappApiKey(companyEntity.getWhatsappApiKey());
+        return model;
+    }
 }

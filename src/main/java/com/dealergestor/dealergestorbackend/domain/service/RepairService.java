@@ -13,9 +13,10 @@ import java.util.List;
 
 public interface RepairService {
 
-    List<Repair> findAll();
-    Repair findById(Long id);
-    Repair create(Repair request);
-    Repair update(Long id, Repair request);
-    void delete(Long id);
+    List<Repair> findAllRepairs();
+    public List<Repair> findAllRepairsActive();
+    Repair findRepairById(Long id);
+    Repair saveRepair(Repair request);
+    Repair updateRepair(Long id, Repair request);
+    void deleteRepair(Long id);
 }

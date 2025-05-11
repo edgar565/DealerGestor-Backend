@@ -5,24 +5,20 @@
  * Todos los derechos reservados.
  **/
 
-package com.dealergestor.dealergestorbackend.domain.model;
+package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
-import java.util.List;
 
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 
-public class Vehicle {
+public class VehicleViewModel {
 
     private Long vehicleId;
     private String licensePlate;
     private String brand;
     private String model;
-    private List<Repair> repairs;
-    private Appointment appointment;
-    private Client client;
 }

@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-
 @Entity
 @Table(name = "appointment")
 public class AppointmentEntity {

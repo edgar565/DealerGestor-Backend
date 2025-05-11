@@ -5,23 +5,21 @@
  * Todos los derechos reservados.
  **/
 
-package com.dealergestor.dealergestorbackend.domain.model;
+package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Repair {
+public class RepairViewModel {
 
     private Long repairId;
     private String status;
-    private LocalDate date;
-    private Part part;
-    private CompanyUser operator;
-    private Vehicle vehicle;
+    private String date;
+    private PartViewModel partViewModel;
+    private CompanyUserViewModel operator;
+    private VehicleViewModel vehicleViewModel;
 }

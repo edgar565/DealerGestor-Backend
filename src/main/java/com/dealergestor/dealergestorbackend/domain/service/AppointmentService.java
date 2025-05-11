@@ -13,9 +13,10 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<Appointment> findAll();
-    Appointment findById(Long id);
-    Appointment create(Appointment request);
-    Appointment update(Long id, Appointment request);
-    void delete(Long id);
+    List<Appointment> findAllAppointments();
+    List<Appointment> findNowAppointments();
+    Appointment findAppointmentById(Long id);
+    Appointment saveAppointment(Appointment request);
+    Appointment updateAppointment(Long id, Appointment request);
+    void deleteAppointment(Long id);
 }

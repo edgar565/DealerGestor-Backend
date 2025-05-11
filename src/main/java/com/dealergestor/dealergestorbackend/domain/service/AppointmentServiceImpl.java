@@ -13,9 +13,10 @@ import com.dealergestor.dealergestorbackend.domain.model.Appointment;
 import com.dealergestor.dealergestorbackend.domain.repository.AppointmentRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.RepairRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
+import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,25 +42,30 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findAll() {
+    public List<Appointment> findAllAppointments() {
         return appointmentRepository.findAll().stream()
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Appointment findById(Long id) {
+    public List<Appointment> findNowAppointments() {
+        return appointmentRepository.findAll().stream()
+                .filter(a -> a.getDateTime().toLocalDate().isEqual(LocalDate.now()))
+                .map(modelMapperUtil::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Appointment findAppointmentById(Long id) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         return modelMapperUtil.toModel(appointmentEntity);
     }
 
     @Override
-    public Appointment create(Appointment model) {
-        AppointmentEntity appointmentEntity = appointmentRepository.findById(model.getAppointmentId())
-                .orElseThrow(() -> new RuntimeException("Appointment not found"));
-
-        VehicleEntity vehicleEntity = vehicleRepository.findById(appointmentEntity.getVehicleEntity().getVehicleId())
+    public Appointment saveAppointment(Appointment model) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
         boolean hasAppointment = appointmentRepository.existsByVehicle(vehicleEntity);
@@ -70,7 +76,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         AppointmentEntity appointment = new AppointmentEntity();
-        appointment.setDateTime(LocalDateTime.parse(model.getDateTime()));
+        appointment.setDateTime(model.getDateTime());
         appointment.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
         appointment.setVehicleEntity(vehicleEntity);
 
@@ -78,14 +84,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment update(Long id, Appointment model) {
+    public Appointment updateAppointment(Long id, Appointment model) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
-        VehicleEntity vehicleEntity = vehicleRepository.findById(appointmentEntity.getVehicleEntity().getVehicleId())
+        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        appointmentEntity.setDateTime(LocalDateTime.parse(model.getDateTime()));
+        appointmentEntity.setDateTime(model.getDateTime());
         appointmentEntity.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
         appointmentEntity.setVehicleEntity(vehicleEntity);
 
@@ -93,7 +99,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
     }
 }

@@ -13,9 +13,10 @@ import java.util.List;
 
 public interface VehicleService {
 
-    List<Vehicle> findAll();
-    Vehicle findById(Long id);
-    Vehicle create(Vehicle request);
-    Vehicle update(Long id, Vehicle request);
-    void delete(Long id);
+    List<Vehicle> findAllVehicles();
+    Vehicle findVehicleById(Long id);
+    Vehicle saveVehicle(Vehicle request);
+    Vehicle updateVehicle(Long id, Vehicle request);
+    void deleteVehicle(Long id);
+    Vehicle findVehicleByLicensePlate(String licensePlate);
 }

@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface PartService {
 
-    List<Part> findAll();
-    Part findById(Long id);
-    Part create(Part request);
-    Part update(Long id, Part request);
-    void delete(Long id);
+    List<Part> findAllParts();
+    Part findPartById(Long id);
+    Part savePart(Part request);
+    Part updatePart(Long id, Part request);
+    void deletePart(Long id);
 }

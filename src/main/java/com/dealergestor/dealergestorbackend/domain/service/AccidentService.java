@@ -13,9 +13,10 @@ import java.util.List;
 
 public interface AccidentService {
 
-    List<Accident> findAll();
-    Accident findById(Long id);
-    Accident create(Accident request);
-    Accident update(Long id, Accident request);
-    void delete(Long id);
+    List<Accident> findAllAccidents();
+    public List<Accident> findAllAccidentsActive();
+    Accident findAccidentById(Long id);
+    Accident saveAccident(Accident request);
+    Accident updateAccident(Long id, Accident request);
+    void deleteAccident(Long id);
 }

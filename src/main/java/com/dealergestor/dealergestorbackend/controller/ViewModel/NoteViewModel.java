@@ -5,7 +5,7 @@
  * Todos los derechos reservados.
  **/
 
-package com.dealergestor.dealergestorbackend.domain.model;
+package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
@@ -16,11 +16,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Note {
+public class NoteViewModel {
 
     private Long noteId;
     private String title;
     private String content;
     private LocalDateTime createdAt;
-    private CompanyUser companyUser;
 }

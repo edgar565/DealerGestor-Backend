@@ -13,8 +13,9 @@ import java.util.List;
 
 public interface NoteService {
 
-    List<Note> findAll();
-    Note findById(Long id);
-    Note create(Note request);
-    void delete(Long id);
+    List<Note> findAllNotes();
+    Note findNoteById(Long id);
+    Note saveNote(Note request);
+    Note updateNote(Long id, Note request);
+    void deleteNote(Long id);
 }

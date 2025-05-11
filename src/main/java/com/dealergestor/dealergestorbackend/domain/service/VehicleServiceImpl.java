@@ -10,6 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
+import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,21 +28,21 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public List<Vehicle> findAll() {
+    public List<Vehicle> findAllVehicles() {
         return vehicleRepository.findAll().stream()
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Vehicle findById(Long id) {
+    public Vehicle findVehicleById(Long id) {
         VehicleEntity vehicleEntity = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
         return modelMapperUtil.toModel(vehicleEntity);
     }
 
     @Override
-    public Vehicle create(Vehicle model) {
+    public Vehicle saveVehicle(Vehicle model) {
         if (vehicleRepository.existsByLicensePlate(model.getLicensePlate())) {
             throw new RuntimeException("License plate already exists");
         }
@@ -54,7 +55,7 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public Vehicle update(Long id, Vehicle model) {
+    public Vehicle updateVehicle(Long id, Vehicle model) {
         VehicleEntity vehicleEntity = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
@@ -65,7 +66,12 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteVehicle(Long id) {
         vehicleRepository.deleteById(id);
+    }
+
+    @Override
+    public Vehicle findVehicleByLicensePlate(String licensePlate) {
+        return modelMapperUtil.toModel(vehicleRepository.findVehicleByLicensePlate(licensePlate));
     }
 }

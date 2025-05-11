@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface ClientService {
 
-    List<Client> findAll();
-    Client findById(Long id);
-    Client create(Client request);
-    Client update(Long id, Client request);
-    void delete(Long id);
+    List<Client> findAllClients();
+    Client findClientById(Long id);
+    Client saveClient(Client request);
+    Client updateClient(Long id, Client request);
+    void deleteClient(Long id);
 }

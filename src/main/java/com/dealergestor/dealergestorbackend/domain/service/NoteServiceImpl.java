@@ -9,11 +9,10 @@ package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.entity.NoteEntity;
-import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Note;
 import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.NoteRepository;
-import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
+import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,50 +23,57 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService{
 
     private final NoteRepository noteRepository;
-    private final VehicleRepository vehicleRepository;
     private final CompanyUserRepository companyUserRepository;
     private final ModelMapperUtil modelMapperUtil;
 
-    public NoteServiceImpl(NoteRepository noteRepository, VehicleRepository vehicleRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil) {
+    public NoteServiceImpl(NoteRepository noteRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil) {
         this.noteRepository = noteRepository;
-        this.vehicleRepository = vehicleRepository;
         this.companyUserRepository = companyUserRepository;
         this.modelMapperUtil = modelMapperUtil;
     }
 
     @Override
-    public List<Note> findAll() {
+    public List<Note> findAllNotes() {
         return noteRepository.findAll().stream()
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Note findById(Long id) {
+    public Note findNoteById(Long id) {
         NoteEntity noteEntity = noteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Note not found"));
         return modelMapperUtil.toModel(noteEntity);
     }
 
     @Override
-    public Note create(Note model) {
-        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicleId())
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
-
-        CompanyUserEntity user = companyUserRepository.findById(model.getUserId())
+    public Note saveNote(Note model) {
+        CompanyUserEntity user = companyUserRepository.findById(model.getCompanyUser().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setTitle(model.getTitle());
         noteEntity.setContent(model.getContent());
         noteEntity.setCreatedAt(LocalDateTime.now());
-        noteEntity.setVehicle(vehicleEntity);
-        noteEntity.setCreatedBy(user);
+        noteEntity.setCompanyUserEntity(user);
 
         return modelMapperUtil.toModel(noteRepository.save(noteEntity));
     }
 
     @Override
-    public void delete(Long id) {
+    public Note updateNote(Long id, Note updatedNote) {
+        NoteEntity existingNote = noteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Note not found with ID: " + id));
+
+        existingNote.setTitle(updatedNote.getTitle());
+        existingNote.setContent(updatedNote.getContent());
+
+        NoteEntity saved = noteRepository.save(existingNote);
+        return modelMapperUtil.toModel(saved);
+    }
+
+    @Override
+    public void deleteNote(Long id) {
         noteRepository.deleteById(id);
     }
 }

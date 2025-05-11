@@ -5,7 +5,7 @@
  * Todos los derechos reservados.
  **/
 
-package com.dealergestor.dealergestorbackend.domain.model;
+package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Part {
+public class PartViewModel {
 
     private Long partId;
     private String keychain;
@@ -54,5 +54,4 @@ public class Part {
     private LocalTime time10;
     private LocalTime time11;
     private LocalTime time12;
-    private Repair repair;
 }

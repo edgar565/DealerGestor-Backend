@@ -10,6 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 import com.dealergestor.dealergestorbackend.domain.entity.ClientEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Client;
 import com.dealergestor.dealergestorbackend.domain.repository.ClientRepository;
+import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,33 +21,29 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository clientRepository;
-    private final RepairServiceImpl repairServiceImpl;
-    private final AppointmentServiceImpl appointmentServiceImpl;
     private final ModelMapperUtil modelMapperUtil;
 
-    public ClientServiceImpl(ClientRepository clientRepository, RepairServiceImpl repairServiceImpl, AppointmentServiceImpl appointmentServiceImpl, ModelMapperUtil modelMapperUtil) {
+    public ClientServiceImpl(ClientRepository clientRepository, ModelMapperUtil modelMapperUtil) {
         this.clientRepository = clientRepository;
-        this.repairServiceImpl = repairServiceImpl;
-        this.appointmentServiceImpl = appointmentServiceImpl;
-        this.modelMapperUtil = new ModelMapperUtil();
+        this.modelMapperUtil = modelMapperUtil;
     }
 
     @Override
-    public List<Client> findAll() {
+    public List<Client> findAllClients() {
         return clientRepository.findAll().stream()
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Client findById(Long id) {
+    public Client findClientById(Long id) {
         ClientEntity clientEntity = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         return modelMapperUtil.toModel(clientEntity);
     }
 
     @Override
-    public Client create(Client model) {
+    public Client saveClient(Client model) {
         if (clientRepository.existsByPhone(model.getPhone())) {
             throw new RuntimeException("Phone number already exists");
         }
@@ -60,7 +57,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Client update(Long id, Client model) {
+    public Client updateClient(Long id, Client model) {
         ClientEntity clientEntity = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
@@ -70,7 +67,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }
 }

@@ -43,37 +43,37 @@ public class PartEntity {
     private String observations;
 
     @Column(name = "lights")
-    private Boolean lights;
+    private boolean lights;
 
     @Column(name = "brake_sensors")
-    private Boolean brakeSensors;
+    private boolean brakeSensors;
 
     @Column(name = "cable_tension")
-    private Boolean cableTension;
+    private boolean cableTension;
 
     @Column(name = "tire_pressure")
-    private Boolean tirePressure;
+    private boolean tirePressure;
 
     @Column(name = "engine_oil")
-    private Boolean engineOil;
+    private boolean engineOil;
 
     @Column(name = "wear")
-    private Boolean wear;
+    private boolean wear;
 
     @Column(name = "brake_fluid")
-    private Boolean brakeFluid;
+    private boolean brakeFluid;
 
     @Column(name = "brake_pads")
-    private Boolean brakePads;
+    private boolean brakePads;
 
     @Column(name = "transmission_kit")
-    private Boolean transmissionKit;
+    private boolean transmissionKit;
 
     @Column(name = "steering_condition")
-    private Boolean steeringCondition;
+    private boolean steeringCondition;
 
     @Column(name = "dynamic_test")
-    private Boolean dynamicTest;
+    private boolean dynamicTest;
 
     @Column(name = "day1")
     private LocalDate day1;

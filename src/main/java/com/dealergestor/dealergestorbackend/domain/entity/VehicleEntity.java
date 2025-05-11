@@ -10,6 +10,9 @@ package com.dealergestor.dealergestorbackend.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -37,8 +40,9 @@ public class VehicleEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
-    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private RepairEntity repairEntity;
+    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepairEntity> repairs = new ArrayList<>();
+
 
     @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private AppointmentEntity appointmentEntity;

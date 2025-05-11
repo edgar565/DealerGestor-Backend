@@ -5,21 +5,18 @@
  * Todos los derechos reservados.
  **/
 
-package com.dealergestor.dealergestorbackend.domain.model;
+package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Appointment {
+public class AppointmentViewModel {
 
     private Long appointmentId;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String task;
-    private Vehicle vehicle;
 }

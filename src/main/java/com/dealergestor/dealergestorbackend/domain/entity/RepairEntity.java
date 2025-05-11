@@ -31,17 +31,45 @@ public class RepairEntity {
     private Status status;
 
     public enum Status {
-        EN_REPARACIÓN,
-        PEDIDO_RECAMBIO,
-        FINALIZADA_CONTACTO,
-        FINALIZADA,
-        CIERRE
+        EN_REPARACION {
+            @Override
+            public String toString() {
+                return "En reparación";
+            }
+        },
+        PEDIDO_RECAMBIO {
+            @Override
+            public String toString() {
+                return "Pedido recambio";
+            }
+        },
+        FINALIZADA_CONTACTO {
+            @Override
+            public String toString() {
+                return "Finalizada con contacto";
+            }
+        },
+        FINALIZADA {
+            @Override
+            public String toString() {
+                return "Finalizada";
+            }
+        },
+        CIERRE {
+            @Override
+            public String toString() {
+                return "Cierre";
+            }
+        }
     }
 
     @Column(name = "date")
     private LocalDate date;
 
-    @OneToOne
+    @Column(name = "isActive")
+    private boolean isActive;
+
+    @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private VehicleEntity vehicleEntity;
 

@@ -7,10 +7,13 @@
 
 package com.dealergestor.dealergestorbackend;
 
+import com.dealergestor.dealergestorbackend.controller.ViewModel.CompanyConfigurationPostViewModel;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.CompanyConfigurationViewModel;
 import com.dealergestor.dealergestorbackend.domain.model.*;
 import com.dealergestor.dealergestorbackend.domain.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,9 +29,9 @@ public class DealerGestorBackendManager {
     private final PartService partService;
     private final RepairService repairService;
     private final VehicleService vehicleService;
-    private final CompanyService companyService;
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public DealerGestorBackendManager(AccidentService accidentService, AppointmentService appointmentService, ClientService clientService, CompanyUserService companyUserService, NoteService noteService, PartService partService, RepairService repairService, VehicleService vehicleService, CompanyService companyService) {
+    public DealerGestorBackendManager(AccidentService accidentService, AppointmentService appointmentService, ClientService clientService, CompanyUserService companyUserService, NoteService noteService, PartService partService, RepairService repairService, VehicleService vehicleService, CompanyConfigurationService companyConfigurationService) {
         this.accidentService = accidentService;
         this.appointmentService = appointmentService;
         this.clientService = clientService;
@@ -37,7 +40,7 @@ public class DealerGestorBackendManager {
         this.partService = partService;
         this.repairService = repairService;
         this.vehicleService = vehicleService;
-        this.companyService = companyService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -251,8 +254,11 @@ public class DealerGestorBackendManager {
     /**
      * COMPANY
      **/
-    public Company updateCompanyLogo(Long companyId, MultipartFile logoFile) {
-        return companyService.updateCompanyLogo(companyId, logoFile);
+    public CompanyConfiguration findCompanyConfiguration(Long id) {
+        return companyConfigurationService.findCompanyConfiguration(id);
+    }
+    public CompanyConfiguration updateCompanyConfiguration(CompanyConfiguration request, MultipartFile logoFile) {
+        return companyConfigurationService.updateCompanyConfiguration(request, logoFile);
     }
 
 

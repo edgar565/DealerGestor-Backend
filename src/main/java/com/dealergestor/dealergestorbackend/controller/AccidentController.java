@@ -29,7 +29,8 @@ public class AccidentController {
         this.viewModelMapperUtil = viewModelMapperUtil;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
+    @ResponseBody
     public List<AccidentViewModel> findAllAccidents() {
         return dealerGestorBackendManager.findAllAccidents()
                 .stream().map(viewModelMapperUtil::toViewModel)
@@ -37,6 +38,7 @@ public class AccidentController {
     }
 
     @GetMapping
+    @ResponseBody
     public List<AccidentViewModel> findAllAccidentsActive() {
         return dealerGestorBackendManager.findAllAccidentsActive()
                 .stream().map(viewModelMapperUtil::toViewModel)
@@ -44,6 +46,7 @@ public class AccidentController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public AccidentViewModel findAccidentById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findAccidentById(id));
     }

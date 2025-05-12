@@ -131,14 +131,14 @@ public class ModelMapperUtil {
         return model;
     }
 
-    public Company toModel(CompanyEntity companyEntity) {
-        Company model = new Company();
-        model.setCompanyId(companyEntity.getCompanyId());
-        model.setNameCompany(companyEntity.getNameCompany());
-        model.setPrimaryColor(companyEntity.getPrimaryColor());
-        model.setSecondaryColor(companyEntity.getSecondaryColor());
-        model.setLogoPath(companyEntity.getLogoPath());
-        model.setWhatsappApiKey(companyEntity.getWhatsappApiKey());
+    public CompanyConfiguration toModel(CompanyConfigurationEntity companyConfigurationEntity) {
+        CompanyConfiguration model = new CompanyConfiguration();
+        model.setCompanyId(companyConfigurationEntity.getCompanyId());
+        model.setNameCompany(companyConfigurationEntity.getNameCompany());
+        model.setPrimaryColor(companyConfigurationEntity.getPrimaryColor());
+        model.setSecondaryColor(companyConfigurationEntity.getSecondaryColor());
+        model.setLogoPath(companyConfigurationEntity.getLogoPath());
+        model.setWhatsappApiKey(companyConfigurationEntity.getWhatsappApiKey());
         return model;
     }
 }

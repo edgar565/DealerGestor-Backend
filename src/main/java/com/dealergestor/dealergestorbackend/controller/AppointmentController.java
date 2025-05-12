@@ -32,6 +32,7 @@ public class AppointmentController {
 
 
     @GetMapping
+    @ResponseBody
     public List<AppointmentViewModel> findAllAppointments() {
         return dealerGestorBackendManager.findAllAppointments()
                 .stream().map(viewModelMapperUtil::toViewModel)
@@ -39,6 +40,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/now")
+    @ResponseBody
     public List<AppointmentViewModel> findNowAppointments() {
         return dealerGestorBackendManager.findNowAppointments()
                 .stream().map(viewModelMapperUtil::toViewModel)
@@ -46,6 +48,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public AppointmentViewModel findAppointmentById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findAppointmentById(id));
     }

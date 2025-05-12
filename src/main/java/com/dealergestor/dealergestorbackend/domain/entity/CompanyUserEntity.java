@@ -37,6 +37,7 @@ public class CompanyUserEntity {
     private Role role;
 
     public enum Role {
+        SUPER_ADMIN,
         ADMIN,
         MECHANIC,
         RECEPTIONIST,

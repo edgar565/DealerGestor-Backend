@@ -128,8 +128,8 @@ public class ViewModelMapperUtil {
         return viewModel;
     }
 
-    public CompanyViewModel toViewModel(Company company) {
-        CompanyViewModel viewModel = new CompanyViewModel();
+    public CompanyConfigurationViewModel toViewModel(CompanyConfiguration company) {
+        CompanyConfigurationViewModel viewModel = new CompanyConfigurationViewModel();
         viewModel.setNameCompany(company.getNameCompany());
         viewModel.setPrimaryColor(company.getPrimaryColor());
         viewModel.setSecondaryColor(company.getSecondaryColor());
@@ -161,7 +161,6 @@ public class ViewModelMapperUtil {
 
     public Repair toModel(RepairPostViewModel repairPostViewModel) {
         Repair model = new Repair();
-        model.setRepairId(repairPostViewModel.getRepairId());
         model.setStatus(repairPostViewModel.getStatus());
         model.setDate(repairPostViewModel.getDate());
         model.setPart(toModel(repairPostViewModel.getPartViewModel()));
@@ -171,7 +170,6 @@ public class ViewModelMapperUtil {
 
     public Accident toModel(AccidentPostViewModel accidentPostViewModel) {
         Accident model = new Accident();
-        model.setRepairId(accidentPostViewModel.getRepairId());
         model.setStatus(accidentPostViewModel.getStatus());
         model.setDate(accidentPostViewModel.getDate());
         model.setPart(toModel(accidentPostViewModel.getPartViewModel()));
@@ -246,7 +244,6 @@ public class ViewModelMapperUtil {
 
     public Appointment toModel(AppointmentPostViewModel appointmentViewModel) {
         Appointment model = new Appointment();
-        model.setAppointmentId(appointmentViewModel.getAppointmentId());
         model.setDateTime(appointmentViewModel.getDateTime());
         model.setTask(appointmentViewModel.getTask());
         return model;
@@ -254,10 +251,18 @@ public class ViewModelMapperUtil {
 
     public CompanyUser toModel(CompanyUserPostViewModel companyUserPostViewModel) {
         CompanyUser model = new CompanyUser();
-        model.setCompanyUserId(companyUserPostViewModel.getCompanyUserId());
         model.setUsername(companyUserPostViewModel.getUsername());
         model.setPassword(companyUserPostViewModel.getPassword());
         model.setRole(companyUserPostViewModel.getRole());
+        return model;
+    }
+
+    public CompanyConfiguration toModel(CompanyConfigurationPostViewModel companyConfigurationPostViewModel) {
+        CompanyConfiguration model = new CompanyConfiguration();
+        model.setNameCompany(companyConfigurationPostViewModel.getCompanyName());
+        model.setPrimaryColor(companyConfigurationPostViewModel.getPrimaryColor());
+        model.setSecondaryColor(companyConfigurationPostViewModel.getSecondaryColor());
+        model.setWhatsappApiKey(companyConfigurationPostViewModel.getWhatsappApiKey());
         return model;
     }
 }

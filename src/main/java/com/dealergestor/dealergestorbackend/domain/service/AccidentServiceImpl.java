@@ -10,7 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 import com.dealergestor.dealergestorbackend.domain.entity.*;
 import com.dealergestor.dealergestorbackend.domain.model.Accident;
 import com.dealergestor.dealergestorbackend.domain.repository.AccidentRepository;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationUserRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.PartRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
@@ -27,14 +27,14 @@ public class AccidentServiceImpl implements AccidentService {
     private final VehicleRepository vehicleRepository;
     private final ModelMapperUtil modelMapperUtil;
     private final PartRepository partRepository;
-    private final CompanyUserRepository companyUserRepository;
+    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
 
-    public AccidentServiceImpl(AccidentRepository accidentRepository, VehicleRepository vehicleRepository, ModelMapperUtil modelMapperUtil, PartRepository partRepository, CompanyUserRepository companyUserRepository) {
+    public AccidentServiceImpl(AccidentRepository accidentRepository, VehicleRepository vehicleRepository, ModelMapperUtil modelMapperUtil, PartRepository partRepository, CompanyConfigurationUserRepository companyConfigurationUserRepository) {
         this.accidentRepository = accidentRepository;
         this.vehicleRepository = vehicleRepository;
         this.modelMapperUtil = modelMapperUtil;
         this.partRepository = partRepository;
-        this.companyUserRepository = companyUserRepository;
+        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AccidentServiceImpl implements AccidentService {
         VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        CompanyUserEntity companyUserEntity = companyUserRepository.findById(model.getOperator().getCompanyUserId())
+        CompanyUserEntity companyUserEntity = companyConfigurationUserRepository.findById(model.getOperator().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("Company user not found"));
 
         AccidentEntity accidentEntity = new AccidentEntity();
@@ -90,7 +90,7 @@ public class AccidentServiceImpl implements AccidentService {
         PartEntity partEntity = partRepository.findById(model.getPart().getPartId())
                 .orElseThrow(() -> new RuntimeException("Part not found"));
 
-        CompanyUserEntity companyUserEntity = companyUserRepository.findById(model.getOperator().getCompanyUserId())
+        CompanyUserEntity companyUserEntity = companyConfigurationUserRepository.findById(model.getOperator().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("Company user not found"));
 
         accidentEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus()));

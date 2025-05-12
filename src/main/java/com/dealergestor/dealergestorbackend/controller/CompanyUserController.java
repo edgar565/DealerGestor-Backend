@@ -31,6 +31,7 @@ public class CompanyUserController {
     }
 
     @GetMapping
+    @ResponseBody
     public List<CompanyUserViewModel> findAllCompanyUsers() {
         return dealerGestorBackendManager.findAllCompanyUsers().stream()
                 .map(viewModelMapperUtil::toViewModel)
@@ -38,6 +39,7 @@ public class CompanyUserController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public CompanyUserViewModel findCompanyUserById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findCompanyUserById(id));
     }

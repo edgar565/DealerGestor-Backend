@@ -9,18 +9,13 @@ package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class RepairPostViewModel {
+public class NotePostViewModel {
 
-    private String status;
-    private LocalDate date;
-    private PartViewModel partViewModel;
-    private CompanyUserViewModel operator;
-    private VehicleViewModel vehicleViewModel;
+    private String title;
+    private String content;
 }

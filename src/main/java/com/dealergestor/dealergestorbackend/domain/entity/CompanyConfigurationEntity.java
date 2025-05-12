@@ -17,7 +17,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "company")
-public class CompanyEntity {
+public class CompanyConfigurationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

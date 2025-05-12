@@ -9,16 +9,13 @@ package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 
-public class CompanyViewModel {
+public class ClientPostViewModel {
 
-    private String nameCompany;
-    private String primaryColor;
-    private String secondaryColor;
-    private String logoPath;
-    private String whatsappApiKey;
+    private String name;
+    private String phone;
 }

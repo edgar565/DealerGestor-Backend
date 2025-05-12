@@ -22,15 +22,15 @@ public class RepairServiceImpl implements RepairService{
     private final RepairRepository repairRepository;
     private final VehicleRepository vehicleRepository;
     private final AppointmentRepository appointmentRepository;
-    private final CompanyUserRepository companyUserRepository;
+    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
     private final ModelMapperUtil modelMapperUtil;
     private final PartRepository partRepository;
 
-    public RepairServiceImpl(RepairRepository repairRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil, PartRepository partRepository) {
+    public RepairServiceImpl(RepairRepository repairRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, CompanyConfigurationUserRepository companyConfigurationUserRepository, ModelMapperUtil modelMapperUtil, PartRepository partRepository) {
         this.repairRepository = repairRepository;
         this.vehicleRepository = vehicleRepository;
         this.appointmentRepository = appointmentRepository;
-        this.companyUserRepository = companyUserRepository;
+        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
         this.modelMapperUtil = modelMapperUtil;
         this.partRepository = partRepository;
     }
@@ -71,7 +71,7 @@ public class RepairServiceImpl implements RepairService{
             throw new RuntimeException("This vehicle already has an active appointment or repair.");
         }
 
-        CompanyUserEntity operator = companyUserRepository.findById(model.getOperator().getCompanyUserId())
+        CompanyUserEntity operator = companyConfigurationUserRepository.findById(model.getOperator().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("Operator not found"));
 
         RepairEntity repairEntity = new RepairEntity();
@@ -91,7 +91,7 @@ public class RepairServiceImpl implements RepairService{
         VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        CompanyUserEntity operator = companyUserRepository.findById(model.getOperator().getCompanyUserId())
+        CompanyUserEntity operator = companyConfigurationUserRepository.findById(model.getOperator().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("Operator not found"));
 
         PartEntity partEntity = partRepository.findById(model.getPart().getPartId())

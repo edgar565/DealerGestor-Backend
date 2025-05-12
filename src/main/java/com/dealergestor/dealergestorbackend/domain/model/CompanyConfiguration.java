@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class CompanyConfiguration {
 
     private Long companyId;
     private String nameCompany;

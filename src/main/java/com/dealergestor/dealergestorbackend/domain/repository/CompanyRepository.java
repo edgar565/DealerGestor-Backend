@@ -7,9 +7,9 @@
 
 package com.dealergestor.dealergestorbackend.domain.repository;
 
-import com.dealergestor.dealergestorbackend.domain.entity.CompanyEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.CompanyConfigurationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
+public interface CompanyRepository extends JpaRepository<CompanyConfigurationEntity, Long> {
 
 }

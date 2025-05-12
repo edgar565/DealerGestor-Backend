@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 public class AppointmentPostViewModel {
 
-    private Long appointmentId;
     private LocalDateTime dateTime;
     private String task;
+    private VehicleViewModel vehicleViewModel;
 }

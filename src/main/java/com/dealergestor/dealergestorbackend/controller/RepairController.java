@@ -37,6 +37,7 @@ public class RepairController {
     }
 
     @GetMapping
+    @ResponseBody
     public List<RepairViewModel> findAllRepairsActive() {
         return dealerGestorBackendManager.findAllRepairsActive()
                 .stream().map(viewModelMapperUtil::toViewModel)
@@ -44,6 +45,7 @@ public class RepairController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public RepairViewModel findRepairById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findRepairById(id));
     }

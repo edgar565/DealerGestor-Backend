@@ -9,7 +9,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationUserRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class CompanyUserServiceImpl implements CompanyUserService{
 
-    private final CompanyUserRepository companyUserRepository;
+    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
     private final ModelMapperUtil modelMapperUtil;
     private final PasswordEncoder passwordEncoder;
 
-    public CompanyUserServiceImpl(CompanyUserRepository companyUserRepository,
+    public CompanyUserServiceImpl(CompanyConfigurationUserRepository companyConfigurationUserRepository,
                                   ModelMapperUtil modelMapperUtil,
                                   PasswordEncoder passwordEncoder) {
-        this.companyUserRepository = companyUserRepository;
+        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
         this.modelMapperUtil = modelMapperUtil;
         this.passwordEncoder = passwordEncoder;
     }
@@ -35,14 +35,14 @@ public class CompanyUserServiceImpl implements CompanyUserService{
 
     @Override
     public List<CompanyUser> findAllCompanyUsers() {
-        return companyUserRepository.findAll().stream()
+        return companyConfigurationUserRepository.findAll().stream()
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CompanyUser findCompanyUserById(Long id) {
-        CompanyUserEntity e = companyUserRepository.findById(id)
+        CompanyUserEntity e = companyConfigurationUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CompanyUser not found"));
         return modelMapperUtil.toModel(e);
     }
@@ -55,13 +55,13 @@ public class CompanyUserServiceImpl implements CompanyUserService{
         companyUserEntity.setPassword(passwordEncoder.encode(companyUser.getPassword()));
         companyUserEntity.setRole(CompanyUserEntity.Role.valueOf(companyUser.getRole()));
         companyUserEntity.setEnabled(true);
-        CompanyUserEntity saved = companyUserRepository.save(companyUserEntity);
+        CompanyUserEntity saved = companyConfigurationUserRepository.save(companyUserEntity);
         return modelMapperUtil.toModel(saved);
     }
 
     @Override
     public CompanyUser updateCompanyUser(Long id, CompanyUser companyUser) {
-        CompanyUserEntity companyUserEntity = companyUserRepository.findById(id)
+        CompanyUserEntity companyUserEntity = companyConfigurationUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CompanyUser not found"));
 
         companyUserEntity.setUsername(companyUser.getUsername());
@@ -72,11 +72,11 @@ public class CompanyUserServiceImpl implements CompanyUserService{
 
         companyUserEntity.setRole(CompanyUserEntity.Role.valueOf(companyUser.getRole()));
         companyUserEntity.setEnabled(companyUser.isEnabled());
-        return modelMapperUtil.toModel(companyUserRepository.save(companyUserEntity));
+        return modelMapperUtil.toModel(companyConfigurationUserRepository.save(companyUserEntity));
     }
 
     @Override
     public void deleteCompanyUser(Long id) {
-        companyUserRepository.deleteById(id);
+        companyConfigurationUserRepository.deleteById(id);
     }
 }

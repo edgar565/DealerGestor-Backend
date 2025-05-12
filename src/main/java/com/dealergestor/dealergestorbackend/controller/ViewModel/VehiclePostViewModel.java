@@ -9,16 +9,15 @@ package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
-import java.util.List;
-
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 
-public class CompanyUserPostViewModel {
+public class VehiclePostViewModel {
 
-    private String username;
-    private String password;
-    private String role;
+    private String licensePlate;
+    private String brand;
+    private String model;
+    private ClientViewModel clientViewModel;
 }

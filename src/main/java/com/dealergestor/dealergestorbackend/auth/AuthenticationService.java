@@ -11,7 +11,7 @@ import com.dealergestor.dealergestorbackend.auth.dto.AuthRequest;
 import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
 import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationUserRepository;
 import com.dealergestor.dealergestorbackend.jwt.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-    private final CompanyUserRepository companyUserRepository;
+    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(CompanyUserRepository companyUserRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.companyUserRepository = companyUserRepository;
+    public AuthenticationService(CompanyConfigurationUserRepository companyConfigurationUserRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
@@ -40,7 +40,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
         user.setEnabled(true);
-        companyUserRepository.save(user);
+        companyConfigurationUserRepository.save(user);
         String token = jwtService.generateToken(user);
         return new AuthResponse(token);
     }
@@ -50,7 +50,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        CompanyUserEntity user = companyUserRepository.findByUsername(request.getUsername());
+        CompanyUserEntity user = companyConfigurationUserRepository.findByUsername(request.getUsername());
         if (user == null) {
             throw new RuntimeException("User not found");
         }

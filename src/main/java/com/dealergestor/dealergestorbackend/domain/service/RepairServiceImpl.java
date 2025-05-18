@@ -78,7 +78,7 @@ public class RepairServiceImpl implements RepairService{
         repairEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus().toUpperCase()));
         repairEntity.setDate(model.getDate());
         repairEntity.setActive(true);
-        repairEntity.setVehicleEntity(vehicleEntity);
+        repairEntity.setVehicle(vehicleEntity);
         repairEntity.setOperator(operator);
         return modelMapperUtil.toModel(repairRepository.save(repairEntity));
     }
@@ -99,7 +99,7 @@ public class RepairServiceImpl implements RepairService{
 
         repairEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus().toUpperCase()));
         repairEntity.setDate(model.getDate());
-        repairEntity.setVehicleEntity(vehicleEntity);
+        repairEntity.setVehicle(vehicleEntity);
         repairEntity.setPartEntity(partEntity);
         repairEntity.setOperator(operator);
 

@@ -40,7 +40,7 @@ public class VehicleEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
-    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepairEntity> repairs = new ArrayList<>();
 
 

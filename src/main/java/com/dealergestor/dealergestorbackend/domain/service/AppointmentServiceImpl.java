@@ -78,7 +78,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentEntity appointment = new AppointmentEntity();
         appointment.setDateTime(model.getDateTime());
         appointment.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
-        appointment.setVehicleEntity(vehicleEntity);
+        appointment.setVehicle(vehicleEntity);
 
         return modelMapperUtil.toModel(appointmentRepository.save(appointment));
     }
@@ -93,7 +93,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointmentEntity.setDateTime(model.getDateTime());
         appointmentEntity.setTask(AppointmentEntity.Task.valueOf(model.getTask().toUpperCase()));
-        appointmentEntity.setVehicleEntity(vehicleEntity);
+        appointmentEntity.setVehicle(vehicleEntity);
 
         return modelMapperUtil.toModel(appointmentRepository.save(appointmentEntity));
     }

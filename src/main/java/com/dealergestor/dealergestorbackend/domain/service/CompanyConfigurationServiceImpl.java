@@ -38,7 +38,7 @@ public class CompanyConfigurationServiceImpl implements CompanyConfigurationServ
     @Override
     public CompanyConfiguration updateCompanyConfiguration(CompanyConfiguration companyConfiguration, MultipartFile logoFile) {
         // 1) Sube el logo y obtiene la URL
-        String logoUrl = fileStorageService.storeFile(logoFile, "company-logos/" + companyConfiguration.getCompanyId());
+//        String logoUrl = fileStorageService.storeFile(logoFile, "company-logos/" + companyConfiguration.getCompanyId());
 
         // 2) Carga la empresa
         CompanyConfigurationEntity company = companyRepository.findById(companyConfiguration.getCompanyId())
@@ -46,7 +46,7 @@ public class CompanyConfigurationServiceImpl implements CompanyConfigurationServ
 
         // 3) Actualiza el campo logoPath
 
-        company.setLogoPath(logoUrl);
+//        company.setLogoPath(logoUrl);
         company.setNameCompany(companyConfiguration.getNameCompany());
         company.setPrimaryColor(companyConfiguration.getPrimaryColor());
         company.setSecondaryColor(companyConfiguration.getSecondaryColor());

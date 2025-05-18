@@ -32,6 +32,6 @@ public class ClientEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VehicleEntity> vehicleEntities;
 }

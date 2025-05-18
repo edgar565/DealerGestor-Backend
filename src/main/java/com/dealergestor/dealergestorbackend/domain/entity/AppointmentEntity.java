@@ -40,5 +40,5 @@ public class AppointmentEntity {
 
     @OneToOne
     @JoinColumn(name = "vehicle_id")
-    private VehicleEntity vehicleEntity;
+    private VehicleEntity vehicle;
 }

@@ -16,8 +16,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "accident")
-@PrimaryKeyJoinColumn(name = "repair_id")
+@DiscriminatorValue("ACCIDENT")
 public class AccidentEntity extends RepairEntity {
 
     @Column(name = "insurance_company")

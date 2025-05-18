@@ -1,22 +1,21 @@
-/**
- * Proyecto: DealerGestor-Backend
- * Autor: EDGAR SÁNCHEZ NICOLAU
- * Derechos de Autor © 2025
- * Todos los derechos reservados.
- **/
-
 package com.dealergestor.dealergestorbackend.controller;
 
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairViewModel;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Repairs", description = "API endpoints for managing repairs")
 @RestController
 @RequestMapping("/repairs")
 public class RepairController {
@@ -29,41 +28,87 @@ public class RepairController {
         this.viewModelMapperUtil = viewModelMapperUtil;
     }
 
+    @Operation(summary = "Get all repairs (including inactive ones)", description = "Returns a list of all repairs, both active and inactive.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of repairs retrieved successfully")
+    })
     @GetMapping("/all")
     public List<RepairViewModel> findAllRepairs() {
         return dealerGestorBackendManager.findAllRepairs()
-                .stream().map(viewModelMapperUtil::toViewModel)
+                .stream()
+                .map(viewModelMapperUtil::toViewModel)
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get active repairs", description = "Returns a list of all active repairs.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of active repairs retrieved successfully")
+    })
     @GetMapping
-    @ResponseBody
     public List<RepairViewModel> findAllRepairsActive() {
         return dealerGestorBackendManager.findAllRepairsActive()
-                .stream().map(viewModelMapperUtil::toViewModel)
+                .stream()
+                .map(viewModelMapperUtil::toViewModel)
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get repair by ID", description = "Returns a single repair by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repair retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Repair not found")
+    })
     @GetMapping("/{id}")
-    @ResponseBody
-    public RepairViewModel findRepairById(@PathVariable Long id) {
+    public RepairViewModel findRepairById(
+            @Parameter(description = "ID of the repair to retrieve", required = true)
+            @PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findRepairById(id));
     }
 
+    @Operation(summary = "Create a new repair", description = "Creates a new repair record.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Repair created successfully")
+    })
     @PostMapping("/save")
-    public RepairViewModel saveRepair(@RequestBody RepairPostViewModel repairPostViewModel) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveRepair(viewModelMapperUtil.toModel(repairPostViewModel)));
+    public ResponseEntity<RepairViewModel> saveRepair(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Repair data to create", required = true)
+            @RequestBody RepairPostViewModel repairPostViewModel) {
+        RepairViewModel result = viewModelMapperUtil.toViewModel(
+                dealerGestorBackendManager.saveRepair(
+                        viewModelMapperUtil.toModel(repairPostViewModel)
+                )
+        );
+        return ResponseEntity.status(201).body(result);
     }
 
+    @Operation(summary = "Update existing repair", description = "Updates details of an existing repair by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repair updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Repair not found")
+    })
     @PutMapping("/update/{id}")
-    public RepairViewModel updateRepair(@PathVariable Long id, @RequestBody RepairPostViewModel updatedRepair) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateRepair(id, viewModelMapperUtil.toModel(updatedRepair)));
+    public RepairViewModel updateRepair(
+            @Parameter(description = "ID of the repair to update", required = true)
+            @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated repair data", required = true)
+            @RequestBody RepairPostViewModel updatedRepair) {
+        return viewModelMapperUtil.toViewModel(
+                dealerGestorBackendManager.updateRepair(
+                        id,
+                        viewModelMapperUtil.toModel(updatedRepair)
+                )
+        );
     }
 
+    @Operation(summary = "Delete a repair", description = "Deletes a repair by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repair deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Repair not found")
+    })
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteRepair(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRepair(
+            @Parameter(description = "ID of the repair to delete", required = true)
+            @PathVariable Long id) {
         dealerGestorBackendManager.deleteRepair(id);
         return ResponseEntity.ok().build();
-
     }
 }

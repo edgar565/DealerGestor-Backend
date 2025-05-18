@@ -71,7 +71,7 @@ public class AccidentServiceImpl implements AccidentService {
         accidentEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus()));
         accidentEntity.setDate(model.getDate());
         accidentEntity.setActive(true);
-        accidentEntity.setVehicleEntity(vehicleEntity);
+        accidentEntity.setVehicle(vehicleEntity);
         accidentEntity.setOperator(companyUserEntity);
         accidentEntity.setInsuranceCompany(model.getInsuranceCompany());
         accidentEntity.setLocation(model.getLocation());
@@ -95,7 +95,7 @@ public class AccidentServiceImpl implements AccidentService {
 
         accidentEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus()));
         accidentEntity.setDate(model.getDate());
-        accidentEntity.setVehicleEntity(vehicleEntity);
+        accidentEntity.setVehicle(vehicleEntity);
         accidentEntity.setPartEntity(partEntity);
         accidentEntity.setOperator(companyUserEntity);
         accidentEntity.setInsuranceCompany(model.getInsuranceCompany());

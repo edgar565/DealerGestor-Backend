@@ -71,9 +71,9 @@ public class RepairEntity {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    private VehicleEntity vehicleEntity;
+    private VehicleEntity vehicle;
 
-    @OneToOne(mappedBy = "repair", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "repairEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private PartEntity partEntity;
 
     @OneToOne

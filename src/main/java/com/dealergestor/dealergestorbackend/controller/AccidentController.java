@@ -11,6 +11,10 @@ import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentViewModel;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accidents")
+@Tag(name = "Accidents", description = "Endpoints for managing accidents")
 public class AccidentController {
 
     private final DealerGestorBackendManager dealerGestorBackendManager;
@@ -29,7 +34,11 @@ public class AccidentController {
         this.viewModelMapperUtil = viewModelMapperUtil;
     }
 
-    @GetMapping()
+    @Operation(summary = "Get all accidents (active and inactive)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All accidents retrieved successfully")
+    })
+    @GetMapping("/all")
     @ResponseBody
     public List<AccidentViewModel> findAllAccidents() {
         return dealerGestorBackendManager.findAllAccidents()
@@ -37,6 +46,10 @@ public class AccidentController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get all active accidents")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Active accidents retrieved successfully")
+    })
     @GetMapping
     @ResponseBody
     public List<AccidentViewModel> findAllAccidentsActive() {
@@ -45,22 +58,48 @@ public class AccidentController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Find accident by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Accident retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Accident not found")
+    })
     @GetMapping("/{id}")
     @ResponseBody
     public AccidentViewModel findAccidentById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findAccidentById(id));
     }
 
+    @Operation(summary = "Create a new accident")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Accident created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")
+    })
     @PostMapping("/save")
     public AccidentViewModel saveAccident(@RequestBody AccidentPostViewModel accidentPostViewModel) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveAccident(viewModelMapperUtil.toModel(accidentPostViewModel)));
+        return viewModelMapperUtil.toViewModel(
+                dealerGestorBackendManager.saveAccident(
+                        viewModelMapperUtil.toModel(accidentPostViewModel)
+                )
+        );
     }
 
+    @Operation(summary = "Update an existing accident by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Accident updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Accident not found")
+    })
     @PutMapping("/update/{id}")
     public AccidentViewModel updateAccident(@PathVariable Long id, @RequestBody AccidentPostViewModel updatedAccident) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateAccident(id, viewModelMapperUtil.toModel(updatedAccident)));
+        return viewModelMapperUtil.toViewModel(
+                dealerGestorBackendManager.updateAccident(id, viewModelMapperUtil.toModel(updatedAccident))
+        );
     }
 
+    @Operation(summary = "Delete an accident by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Accident deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Accident not found")
+    })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAccident(@PathVariable Long id) {
         dealerGestorBackendManager.deleteAccident(id);

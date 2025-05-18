@@ -10,6 +10,10 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.ClientViewModel;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clients")
+@Tag(name = "Clients", description = "Endpoints for managing clients")
 public class ClientController {
 
     private final DealerGestorBackendManager dealerGestorBackendManager;
@@ -28,6 +33,11 @@ public class ClientController {
         this.viewModelMapperUtil = viewModelMapperUtil;
     }
 
+    @Operation(summary = "Get all clients", description = "Returns a list of all clients in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Clients found"),
+            @ApiResponse(responseCode = "404", description = "Clients not found")
+    })
     @GetMapping
     @ResponseBody
     public List<ClientViewModel> findAllClients() {
@@ -36,22 +46,30 @@ public class ClientController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get a client by ID", description = "Returns the client with the specified ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Client found"),
+            @ApiResponse(responseCode = "404", description = "Client not found")
+    })
     @GetMapping("/{id}")
     @ResponseBody
     public ClientViewModel findClientById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findClientById(id));
     }
 
+    @Operation(summary = "Create a new client", description = "Registers a new client in the system")
     @PostMapping("/save")
     public ClientViewModel saveClient(@RequestBody ClientViewModel clientViewModel) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveClient(viewModelMapperUtil.toModel(clientViewModel)));
     }
 
+    @Operation(summary = "Update an existing client", description = "Modifies the data of an existing client")
     @PutMapping("/update/{id}")
     public ClientViewModel updateClient(@PathVariable Long id, @RequestBody ClientViewModel updatedClient) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateClient(id, viewModelMapperUtil.toModel(updatedClient)));
     }
 
+    @Operation(summary = "Delete a client", description = "Deletes a client with the specified ID")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         dealerGestorBackendManager.deleteClient(id);

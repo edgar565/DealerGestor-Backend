@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class AppointmentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Appointments retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping
     @ResponseBody
     public List<AppointmentViewModel> findAllAppointments() {
@@ -49,6 +51,7 @@ public class AppointmentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Today's appointments retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/now")
     @ResponseBody
     public List<AppointmentViewModel> findNowAppointments() {
@@ -63,6 +66,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Appointment found successfully"),
             @ApiResponse(responseCode = "404", description = "Appointment not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/{id}")
     @ResponseBody
     public AppointmentViewModel findAppointmentById(@PathVariable Long id) {
@@ -74,6 +78,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Appointment created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid appointment data")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public AppointmentViewModel saveAppointment(@RequestBody AppointmentPostViewModel appointmentPostViewModel) {
         return viewModelMapperUtil.toViewModel(
@@ -88,6 +93,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Appointment updated successfully"),
             @ApiResponse(responseCode = "404", description = "Appointment not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
     public AppointmentViewModel updateAppointment(@PathVariable Long id, @RequestBody AppointmentPostViewModel updatedAppointment) {
         return viewModelMapperUtil.toViewModel(
@@ -103,6 +109,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Appointment deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Appointment not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAppointment(@PathVariable Long id) {
         dealerGestorBackendManager.deleteAppointment(id);

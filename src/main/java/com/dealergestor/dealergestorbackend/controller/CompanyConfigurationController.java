@@ -38,6 +38,7 @@ public class CompanyConfigurationController {
             @ApiResponse(responseCode = "200", description = "Configuration found"),
             @ApiResponse(responseCode = "404", description = "Configuration not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @GetMapping("/{id}")
     public CompanyConfigurationViewModel findCompanyConfiguration(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(manager.findCompanyConfiguration(id));

@@ -9,7 +9,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyConfigurationEntity;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyConfiguration;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationRepository;
 import com.dealergestor.dealergestorbackend.storage.FileStorageService;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class CompanyConfigurationServiceImpl implements CompanyConfigurationService {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyConfigurationRepository companyConfigurationRepository;
     private final ModelMapperUtil modelMapperUtil;
     private final FileStorageService fileStorageService;
 
-    public CompanyConfigurationServiceImpl(CompanyRepository companyRepository, ModelMapperUtil modelMapperUtil, FileStorageService fileStorageService) {
-        this.companyRepository = companyRepository;
+    public CompanyConfigurationServiceImpl(CompanyConfigurationRepository companyConfigurationRepository, ModelMapperUtil modelMapperUtil, FileStorageService fileStorageService) {
+        this.companyConfigurationRepository = companyConfigurationRepository;
         this.modelMapperUtil = modelMapperUtil;
         this.fileStorageService = fileStorageService;
     }
 
     @Override
     public CompanyConfiguration findCompanyConfiguration(Long id){
-        CompanyConfigurationEntity companyConfigurationEntity = companyRepository.findById(id)
+        CompanyConfigurationEntity companyConfigurationEntity = companyConfigurationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CompanyConfiguration not found"));
         return modelMapperUtil.toModel(companyConfigurationEntity);
     }
@@ -41,7 +41,7 @@ public class CompanyConfigurationServiceImpl implements CompanyConfigurationServ
 //        String logoUrl = fileStorageService.storeFile(logoFile, "company-logos/" + companyConfiguration.getCompanyId());
 
         // 2) Carga la empresa
-        CompanyConfigurationEntity company = companyRepository.findById(companyConfiguration.getCompanyId())
+        CompanyConfigurationEntity company = companyConfigurationRepository.findById(companyConfiguration.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("Company not found: " + companyConfiguration.getCompanyId()));
 
         // 3) Actualiza el campo logoPath
@@ -51,7 +51,7 @@ public class CompanyConfigurationServiceImpl implements CompanyConfigurationServ
         company.setPrimaryColor(companyConfiguration.getPrimaryColor());
         company.setSecondaryColor(companyConfiguration.getSecondaryColor());
         company.setWhatsappApiKey(companyConfiguration.getWhatsappApiKey());
-        CompanyConfigurationEntity saved = companyRepository.save(company);
+        CompanyConfigurationEntity saved = companyConfigurationRepository.save(company);
 
         // 4) Devuelve el modelo
         return modelMapperUtil.toModel(saved);

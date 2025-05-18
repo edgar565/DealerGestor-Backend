@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CompanyConfigurationUserRepository extends JpaRepository<CompanyUserEntity, Long> {
+public interface CompanyUserRepository extends JpaRepository<CompanyUserEntity, Long> {
 
     CompanyUserEntity findByUsername(String username);
 }

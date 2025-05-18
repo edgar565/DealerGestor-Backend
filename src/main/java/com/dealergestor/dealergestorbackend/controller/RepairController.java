@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class RepairController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of repairs retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @GetMapping("/all")
     public List<RepairViewModel> findAllRepairs() {
         return dealerGestorBackendManager.findAllRepairs()
@@ -44,6 +46,7 @@ public class RepairController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of active repairs retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping
     public List<RepairViewModel> findAllRepairsActive() {
         return dealerGestorBackendManager.findAllRepairsActive()
@@ -57,6 +60,7 @@ public class RepairController {
             @ApiResponse(responseCode = "200", description = "Repair retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Repair not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/{id}")
     public RepairViewModel findRepairById(
             @Parameter(description = "ID of the repair to retrieve", required = true)
@@ -68,6 +72,7 @@ public class RepairController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Repair created successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public ResponseEntity<RepairViewModel> saveRepair(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Repair data to create", required = true)
@@ -85,6 +90,7 @@ public class RepairController {
             @ApiResponse(responseCode = "200", description = "Repair updated successfully"),
             @ApiResponse(responseCode = "404", description = "Repair not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
     public RepairViewModel updateRepair(
             @Parameter(description = "ID of the repair to update", required = true)
@@ -104,6 +110,7 @@ public class RepairController {
             @ApiResponse(responseCode = "200", description = "Repair deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Repair not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteRepair(
             @Parameter(description = "ID of the repair to delete", required = true)

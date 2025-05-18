@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class PartController {
 
     @Operation(summary = "Get all parts", description = "Retrieve a list of all parts")
     @ApiResponse(responseCode = "200", description = "Parts retrieved successfully")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping
     public List<PartViewModel> findAllParts() {
         return dealerGestorBackendManager.findAllParts()
@@ -40,6 +42,7 @@ public class PartController {
             @ApiResponse(responseCode = "200", description = "Part retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Part not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST', 'MECHANIC')")
     @GetMapping("/{id}")
     public PartViewModel findPartById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findPartById(id));
@@ -47,6 +50,7 @@ public class PartController {
 
     @Operation(summary = "Create a new part", description = "Save a new part in the system")
     @ApiResponse(responseCode = "201", description = "Part created successfully")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public PartViewModel savePart(@RequestBody PartViewModel part) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.savePart(viewModelMapperUtil.toModel(part)));
@@ -57,6 +61,7 @@ public class PartController {
             @ApiResponse(responseCode = "200", description = "Part updated successfully"),
             @ApiResponse(responseCode = "404", description = "Part not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST', 'MECHANIC')")
     @PutMapping("/updateRepair/{id}")
     public PartViewModel updatePart(@PathVariable Long id, @RequestBody PartViewModel updatedPart) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updatePart(id, viewModelMapperUtil.toModel(updatedPart)));
@@ -67,6 +72,7 @@ public class PartController {
             @ApiResponse(responseCode = "200", description = "Part deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Part not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/deleteRepair/{id}")
     public ResponseEntity<?> deletePart(@PathVariable Long id) {
         dealerGestorBackendManager.deletePart(id);

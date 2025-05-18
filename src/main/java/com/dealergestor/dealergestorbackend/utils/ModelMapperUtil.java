@@ -10,6 +10,8 @@ package com.dealergestor.dealergestorbackend.utils;
 import com.dealergestor.dealergestorbackend.domain.entity.*;
 import com.dealergestor.dealergestorbackend.domain.model.*;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
@@ -110,15 +112,23 @@ public class ModelMapperUtil {
     }
 
     public CompanyUser toModel(CompanyUserEntity companyUserEntity) {
+        if (companyUserEntity == null) {
+            return null;
+        }
         CompanyUser model = new CompanyUser();
         model.setCompanyUserId(companyUserEntity.getCompanyUserId());
         model.setUsername(companyUserEntity.getUsername());
         model.setPassword(companyUserEntity.getPassword());
         model.setRole(companyUserEntity.getRole().name());
         model.setEnabled(companyUserEntity.isEnabled());
-        model.setNotes(companyUserEntity.getNoteEntities()
-                .stream().map(this::toModel)
-                .collect(Collectors.toList()));
+        model.setNotes(
+                companyUserEntity.getNoteEntities() != null
+                        ? companyUserEntity.getNoteEntities()
+                        .stream()
+                        .map(this::toModel)
+                        .collect(Collectors.toList())
+                        : new ArrayList<>()
+        );
         return model;
     }
 

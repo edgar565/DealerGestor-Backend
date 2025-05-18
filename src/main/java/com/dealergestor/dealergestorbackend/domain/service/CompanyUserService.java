@@ -18,4 +18,5 @@ public interface CompanyUserService {
     CompanyUser saveCompanyUser(CompanyUser user);
     CompanyUser updateCompanyUser(Long id, CompanyUser user);
     void deleteCompanyUser(Long id);
+    public CompanyUser findByUsername(String username);
 }

@@ -143,6 +143,10 @@ public class DealerGestorBackendManager {
         companyUserService.deleteCompanyUser(id);
     }
 
+    public CompanyUser findByUsername(String username) {
+        return companyUserService.findByUsername(username);
+    }
+
 
     /**
      * NOTE
@@ -257,6 +261,4 @@ public class DealerGestorBackendManager {
     public CompanyConfiguration updateCompanyConfiguration(CompanyConfiguration request, MultipartFile logoFile) {
         return companyConfigurationService.updateCompanyConfiguration(request, logoFile);
     }
-
-
 }

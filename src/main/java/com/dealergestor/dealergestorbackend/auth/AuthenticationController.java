@@ -12,8 +12,13 @@ import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
 import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
 import com.dealergestor.dealergestorbackend.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,13 +30,19 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
+    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+        try {
+            AuthResponse response = authService.authenticate(request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.ok(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

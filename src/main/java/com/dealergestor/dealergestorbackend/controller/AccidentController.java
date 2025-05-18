@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class AccidentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All accidents retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @GetMapping("/all")
     @ResponseBody
     public List<AccidentViewModel> findAllAccidents() {
@@ -50,6 +52,7 @@ public class AccidentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Active accidents retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping
     @ResponseBody
     public List<AccidentViewModel> findAllAccidentsActive() {
@@ -63,6 +66,7 @@ public class AccidentController {
             @ApiResponse(responseCode = "200", description = "Accident retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Accident not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/{id}")
     @ResponseBody
     public AccidentViewModel findAccidentById(@PathVariable Long id) {
@@ -74,6 +78,7 @@ public class AccidentController {
             @ApiResponse(responseCode = "200", description = "Accident created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public AccidentViewModel saveAccident(@RequestBody AccidentPostViewModel accidentPostViewModel) {
         return viewModelMapperUtil.toViewModel(
@@ -88,6 +93,7 @@ public class AccidentController {
             @ApiResponse(responseCode = "200", description = "Accident updated successfully"),
             @ApiResponse(responseCode = "404", description = "Accident not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
     public AccidentViewModel updateAccident(@PathVariable Long id, @RequestBody AccidentPostViewModel updatedAccident) {
         return viewModelMapperUtil.toViewModel(
@@ -100,6 +106,7 @@ public class AccidentController {
             @ApiResponse(responseCode = "200", description = "Accident deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Accident not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAccident(@PathVariable Long id) {
         dealerGestorBackendManager.deleteAccident(id);

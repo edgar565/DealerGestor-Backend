@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of vehicles retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping
     public List<VehicleViewModel> findAllVehicles() {
         return dealerGestorBackendManager.findAllVehicles()
@@ -48,6 +50,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "200", description = "Vehicle retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/{id}")
     public VehicleViewModel findVehicleById(
             @Parameter(description = "ID of the vehicle to retrieve", required = true)
@@ -62,6 +65,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "200", description = "Vehicle retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @GetMapping("/licensePlate/{licensePlate}")
     public VehicleViewModel findVehicleByLicensePlate(
             @Parameter(description = "License plate of the vehicle to retrieve", required = true)
@@ -75,6 +79,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Vehicle created successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public ResponseEntity<VehicleViewModel> saveVehicle(
             @RequestBody(description = "Vehicle data to create", required = true,
@@ -93,6 +98,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
     public VehicleViewModel updateVehicle(
             @Parameter(description = "ID of the vehicle to update", required = true)
@@ -113,6 +119,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "200", description = "Vehicle deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteVehicle(
             @Parameter(description = "ID of the vehicle to delete", required = true)

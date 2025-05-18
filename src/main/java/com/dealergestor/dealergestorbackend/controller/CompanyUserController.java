@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class CompanyUserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users retrieved successfully")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @GetMapping
     @ResponseBody
     public List<CompanyUserViewModel> findAllCompanyUsers() {
@@ -52,6 +54,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @GetMapping("/{id}")
     @ResponseBody
     public CompanyUserViewModel findCompanyUserById(@PathVariable Long id) {
@@ -63,6 +66,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "201", description = "User registered successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @PostMapping("/register")
     public CompanyUserViewModel saveCompanyUser(@RequestBody CompanyUserPostViewModel companyUserPostViewModel) {
         return viewModelMapperUtil.toViewModel(
@@ -76,6 +80,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @PutMapping("/update/{id}")
     public CompanyUserViewModel updateCompanyUser(@PathVariable Long id, @RequestBody CompanyUserPostViewModel companyUserPostViewModel) {
         return viewModelMapperUtil.toViewModel(
@@ -88,6 +93,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "200", description = "User deleted successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCompanyUser(@PathVariable Long id) {
         dealerGestorBackendManager.deleteCompanyUser(id);

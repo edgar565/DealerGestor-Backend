@@ -8,7 +8,7 @@
 package com.dealergestor.dealergestorbackend.config;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationUserRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
 import com.dealergestor.dealergestorbackend.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,11 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
+    private final CompanyUserRepository companyUserRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, CompanyConfigurationUserRepository companyConfigurationUserRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService, CompanyUserRepository companyUserRepository) {
         this.jwtService = jwtService;
-        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
+        this.companyUserRepository = companyUserRepository;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            CompanyUserEntity user = companyConfigurationUserRepository.findByUsername(username);
+            CompanyUserEntity user = companyUserRepository.findByUsername(username);
 
             if (user != null && jwtService.validateToken(jwt, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

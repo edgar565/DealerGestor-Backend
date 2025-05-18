@@ -10,7 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.entity.NoteEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Note;
-import com.dealergestor.dealergestorbackend.domain.repository.CompanyConfigurationUserRepository;
+import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.NoteRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService{
 
     private final NoteRepository noteRepository;
-    private final CompanyConfigurationUserRepository companyConfigurationUserRepository;
+    private final CompanyUserRepository companyUserRepository;
     private final ModelMapperUtil modelMapperUtil;
 
-    public NoteServiceImpl(NoteRepository noteRepository, CompanyConfigurationUserRepository companyConfigurationUserRepository, ModelMapperUtil modelMapperUtil) {
+    public NoteServiceImpl(NoteRepository noteRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil) {
         this.noteRepository = noteRepository;
-        this.companyConfigurationUserRepository = companyConfigurationUserRepository;
+        this.companyUserRepository = companyUserRepository;
         this.modelMapperUtil = modelMapperUtil;
     }
 
@@ -48,7 +48,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note saveNote(Note model) {
-        CompanyUserEntity user = companyConfigurationUserRepository.findById(model.getCompanyUser().getCompanyUserId())
+        CompanyUserEntity user = companyUserRepository.findById(model.getCompanyUser().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         NoteEntity noteEntity = new NoteEntity();

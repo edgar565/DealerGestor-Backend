@@ -43,6 +43,11 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public Client findClientByName(String name) {
+        return modelMapperUtil.toModel(clientRepository.findByName(name));
+    }
+
+    @Override
     public Client saveClient(Client model) {
         if (clientRepository.existsByPhone(model.getPhone())) {
             throw new RuntimeException("Phone number already exists");

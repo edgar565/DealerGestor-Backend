@@ -42,7 +42,7 @@ public class AuthenticationController {
             AuthResponse response = authService.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.ok(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error durante la autenticación");
         }
     }
 }

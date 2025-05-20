@@ -11,6 +11,7 @@ import com.dealergestor.dealergestorbackend.controller.ViewModel.*;
 import com.dealergestor.dealergestorbackend.domain.model.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
@@ -142,18 +143,16 @@ public class ViewModelMapperUtil {
     /**
      *  THE VIEWMODEL A MODEL
      **/
-    public Vehicle toModel(VehicleViewModel vehicleViewModel) {
+    public Vehicle toModel(VehiclePostViewModel vehicleViewModel) {
         Vehicle model = new Vehicle();
-        model.setVehicleId(vehicleViewModel.getVehicleId());
         model.setLicensePlate(vehicleViewModel.getLicensePlate());
         model.setModel(vehicleViewModel.getModel());
         model.setBrand(vehicleViewModel.getBrand());
         return model;
     }
 
-    public Client toModel(ClientViewModel clientViewModel) {
+    public Client toModel(ClientPostViewModel clientViewModel) {
         Client model = new Client();
-        model.setClientId(clientViewModel.getClientId());
         model.setName(clientViewModel.getName());
         model.setPhone(clientViewModel.getPhone());
         return model;
@@ -239,6 +238,14 @@ public class ViewModelMapperUtil {
         model.setTitle(noteViewModel.getTitle());
         model.setContent(noteViewModel.getContent());
         model.setCreatedAt(noteViewModel.getCreatedAt());
+        return model;
+    }
+
+    public Note toModel(NotePostViewModel notePostViewModel) {
+        Note model = new Note();
+        model.setTitle(notePostViewModel.getTitle());
+        model.setContent(notePostViewModel.getContent());
+        model.setCreatedAt(LocalDateTime.now());
         return model;
     }
 

@@ -22,5 +22,5 @@ public class RepairPostViewModel {
     private LocalDate date;
     private PartViewModel partViewModel;
     private CompanyUserViewModel operator;
-    private VehicleViewModel vehicleViewModel;
+    private VehiclePostViewModel vehicleViewModel;
 }

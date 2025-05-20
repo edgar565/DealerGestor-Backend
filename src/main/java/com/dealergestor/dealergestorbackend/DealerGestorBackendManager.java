@@ -119,6 +119,10 @@ public class DealerGestorBackendManager {
         clientService.deleteClient(id);
     }
 
+    public Client findClientByName(String name) {
+        return clientService.findClientByName(name);
+    }
+
 
     /**
      * COMPANY USER

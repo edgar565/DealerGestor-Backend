@@ -34,4 +34,10 @@ public class ClientEntity {
 
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VehicleEntity> vehicleEntities;
+
+    public ClientEntity(Long clientId, String name, String phone) {
+        this.clientId = clientId;
+        this.name = name;
+        this.phone = phone;
+    }
 }

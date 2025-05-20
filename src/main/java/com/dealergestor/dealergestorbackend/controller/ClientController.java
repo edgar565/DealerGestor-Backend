@@ -8,6 +8,7 @@
 package com.dealergestor.dealergestorbackend.controller;
 
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.ClientPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.ClientViewModel;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,20 +62,29 @@ public class ClientController {
     }
 
     @Operation(summary = "Create a new client", description = "Registers a new client in the system")
+    @ApiResponse(responseCode = "201", description = "Client created successfully")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
-    public ClientViewModel saveClient(@RequestBody ClientViewModel clientViewModel) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveClient(viewModelMapperUtil.toModel(clientViewModel)));
+    public ResponseEntity<ClientViewModel> saveClient(@RequestBody ClientPostViewModel clientViewModel) {
+        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveClient(viewModelMapperUtil.toModel(clientViewModel))));
     }
 
     @Operation(summary = "Update an existing client", description = "Modifies the data of an existing client")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Client updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Client not found")
+    })
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
-    public ClientViewModel updateClient(@PathVariable Long id, @RequestBody ClientViewModel updatedClient) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateClient(id, viewModelMapperUtil.toModel(updatedClient)));
+    public ResponseEntity<ClientViewModel> updateClient(@PathVariable Long id, @RequestBody ClientPostViewModel updatedClient) {
+        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateClient(id, viewModelMapperUtil.toModel(updatedClient))));
     }
 
     @Operation(summary = "Delete a client", description = "Deletes a client with the specified ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Client deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Client not found")
+    })
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {

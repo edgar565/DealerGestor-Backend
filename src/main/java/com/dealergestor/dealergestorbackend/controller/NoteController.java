@@ -1,14 +1,20 @@
 package com.dealergestor.dealergestorbackend.controller;
 
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.NotePostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.NoteViewModel;
+import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
+import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
+import com.dealergestor.dealergestorbackend.domain.model.Note;
+import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,10 +58,8 @@ public class NoteController {
     @Operation(summary = "Create a new note", description = "Save a new note in the system")
     @ApiResponse(responseCode = "201", description = "Note created successfully")
     @PostMapping("/save")
-    public NoteViewModel saveNote(@RequestBody NoteViewModel noteViewModel) {
-        return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.saveNote(viewModelMapperUtil.toModel(noteViewModel))
-        );
+    public ResponseEntity<NoteViewModel> saveNote(@RequestBody NotePostViewModel notePostViewModel) {
+        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveNote(viewModelMapperUtil.toModel(notePostViewModel))));
     }
 
     @Operation(summary = "Update a note", description = "Update an existing note by ID")
@@ -64,10 +68,8 @@ public class NoteController {
             @ApiResponse(responseCode = "404", description = "Note not found")
     })
     @PutMapping("/update/{id}")
-    public NoteViewModel updateNote(@PathVariable Long id, @RequestBody NoteViewModel updatedNote) {
-        return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.updateNote(id, viewModelMapperUtil.toModel(updatedNote))
-        );
+    public ResponseEntity<NoteViewModel> updateNote(@PathVariable Long id, @RequestBody NotePostViewModel updatedNote) {
+        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updateNote(id, viewModelMapperUtil.toModel(updatedNote))));
     }
 
     @Operation(summary = "Delete a note", description = "Delete a note by its ID")

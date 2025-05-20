@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,12 +39,14 @@ public class VehicleEntity {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private ClientEntity clientEntity;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<RepairEntity> repairs = new ArrayList<>();
 
-
     @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private AppointmentEntity appointmentEntity;
 }

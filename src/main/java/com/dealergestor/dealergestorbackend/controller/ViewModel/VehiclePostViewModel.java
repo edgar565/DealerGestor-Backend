@@ -19,5 +19,5 @@ public class VehiclePostViewModel {
     private String licensePlate;
     private String brand;
     private String model;
-    private ClientViewModel clientViewModel;
+    private ClientPostViewModel clientViewModel;
 }

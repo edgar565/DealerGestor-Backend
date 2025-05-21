@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -113,7 +114,8 @@ public class PartEntity {
     @Column(name = "time12")
     private LocalTime time12;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "repair_id")
+    @JsonIgnore
     private RepairEntity repairEntity;
 }

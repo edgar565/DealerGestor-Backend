@@ -54,4 +54,5 @@ public class PartViewModel {
     private LocalTime time10;
     private LocalTime time11;
     private LocalTime time12;
+    private Long repairId;
 }

@@ -3,6 +3,9 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairViewModel;
+import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
+import com.dealergestor.dealergestorbackend.domain.model.Repair;
+import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,10 +81,19 @@ public class RepairController {
     public ResponseEntity<RepairViewModel> saveRepair(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Repair data to create", required = true)
             @RequestBody RepairPostViewModel repairPostViewModel) {
+
+        CompanyUser companyUser = dealerGestorBackendManager.findCompanyUserById(repairPostViewModel.getOperatorId());
+        Vehicle vehicle = dealerGestorBackendManager.findVehicleById(repairPostViewModel.getVehicleId());
+
+        Repair repair = new Repair();
+        repair.setStatus(repairPostViewModel.getStatus());
+        repair.setDate(LocalDate.now());
+        repair.setOperator(companyUser);
+        repair.setVehicle(vehicle);
+        repair.setActive(true);
+
         RepairViewModel result = viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.saveRepair(
-                        viewModelMapperUtil.toModel(repairPostViewModel)
-                )
+                dealerGestorBackendManager.saveRepair(repair)
         );
         return ResponseEntity.status(201).body(result);
     }
@@ -97,11 +110,17 @@ public class RepairController {
             @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated repair data", required = true)
             @RequestBody RepairPostViewModel updatedRepair) {
+
+        CompanyUser companyUser = dealerGestorBackendManager.findCompanyUserById(updatedRepair.getOperatorId());
+
+
+        Repair repair = new Repair();
+        repair.setStatus(updatedRepair.getStatus());
+        repair.setDate(LocalDate.now());
+        repair.setOperator(companyUser);
+
         return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.updateRepair(
-                        id,
-                        viewModelMapperUtil.toModel(updatedRepair)
-                )
+                dealerGestorBackendManager.updateRepair(id, repair)
         );
     }
 

@@ -10,6 +10,9 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentViewModel;
+import com.dealergestor.dealergestorbackend.domain.model.Accident;
+import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
+import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,10 +85,20 @@ public class AccidentController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public AccidentViewModel saveAccident(@RequestBody AccidentPostViewModel accidentPostViewModel) {
+
+        CompanyUser companyUser = dealerGestorBackendManager.findCompanyUserById(accidentPostViewModel.getOperatorId());
+        Vehicle vehicle = dealerGestorBackendManager.findVehicleById(accidentPostViewModel.getVehicleId());
+
+        Accident accident = new Accident();
+        accident.setStatus(accidentPostViewModel.getStatus());
+        accident.setDate(LocalDate.now());
+        accident.setOperator(companyUser);
+        accident.setVehicle(vehicle);
+        accident.setActive(true);
+        accident.setLocation(accidentPostViewModel.getLocation());
+        accident.setInsuranceCompany(accidentPostViewModel.getInsuranceCompany());
         return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.saveAccident(
-                        viewModelMapperUtil.toModel(accidentPostViewModel)
-                )
+                dealerGestorBackendManager.saveAccident(accident)
         );
     }
 

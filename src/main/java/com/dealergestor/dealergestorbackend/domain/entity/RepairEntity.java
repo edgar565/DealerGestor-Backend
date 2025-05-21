@@ -7,10 +7,13 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -71,10 +74,11 @@ public class RepairEntity {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
+    @JsonIgnore
     private VehicleEntity vehicle;
 
-    @OneToOne(mappedBy = "repairEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PartEntity partEntity;
+    @OneToMany(mappedBy = "repairEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PartEntity> partEntity = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "operator_id")

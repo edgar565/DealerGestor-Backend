@@ -37,7 +37,9 @@ public class ModelMapperUtil {
         model.setRepairs(vehicleEntity.getRepairs()
                 .stream().map(this::toModel)
                 .collect(Collectors.toList()));
-        model.setAppointment(toModel(vehicleEntity.getAppointmentEntity()));
+        model.setAppointment(vehicleEntity.getAppointmentEntity().stream()
+                .findFirst()
+                .map(this::toModel).orElse(null));
         return model;
     }
 
@@ -54,7 +56,7 @@ public class ModelMapperUtil {
         model.setRepairId(repairEntity.getRepairId());
         model.setStatus(repairEntity.getStatus().toString());
         model.setDate(repairEntity.getDate());
-        model.setPart(toModel(repairEntity.getPartEntity()));
+        model.setPart(repairEntity.getPartEntity().stream().map(this::toModel).toList());
         model.setOperator(toModel(repairEntity.getOperator()));
         return model;
     }
@@ -65,7 +67,7 @@ public class ModelMapperUtil {
         model.setStatus(accidentEntity.getStatus().toString());
         model.setDate(accidentEntity.getDate());
         model.setOperator(toModel(accidentEntity.getOperator()));
-        model.setPart(toModel(accidentEntity.getPartEntity()));
+        model.setPart(accidentEntity.getPartEntity().stream().map(this::toModel).toList());
         model.setInsuranceCompany(accidentEntity.getInsuranceCompany());
         model.setLocation(accidentEntity.getLocation());
         return model;

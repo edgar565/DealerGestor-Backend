@@ -7,14 +7,13 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
-import com.dealergestor.dealergestorbackend.domain.entity.ClientEntity;
 import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
+import com.dealergestor.dealergestorbackend.utils.EntityMapperUtil;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +22,12 @@ public class VehicleServiceImpl implements VehicleService{
 
     private final VehicleRepository vehicleRepository;
     private final ModelMapperUtil modelMapperUtil;
+    private final EntityMapperUtil entityMapperUtil;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapperUtil modelMapperUtil) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapperUtil modelMapperUtil, EntityMapperUtil entityMapperUtil) {
         this.vehicleRepository = vehicleRepository;
         this.modelMapperUtil = modelMapperUtil;
+        this.entityMapperUtil = entityMapperUtil;
     }
 
     @Override
@@ -48,15 +49,7 @@ public class VehicleServiceImpl implements VehicleService{
         if (vehicleRepository.existsByLicensePlate(model.getLicensePlate())) {
             throw new RuntimeException("License plate already exists");
         }
-
-        VehicleEntity vehicleEntity = new VehicleEntity();
-        vehicleEntity.setLicensePlate(model.getLicensePlate());
-        vehicleEntity.setBrand(model.getBrand());
-        vehicleEntity.setModel(model.getModel());
-        vehicleEntity.setClientEntity(new ClientEntity(model.getClient().getClientId(), model.getClient().getName(), model.getClient().getPhone()));
-        vehicleEntity.setRepairs(new ArrayList<>());
-        vehicleEntity.setAppointmentEntity(null);
-        return modelMapperUtil.toModel(vehicleRepository.save(vehicleEntity));
+        return modelMapperUtil.toModel(vehicleRepository.save(entityMapperUtil.toEntity(model)));
     }
 
     @Override

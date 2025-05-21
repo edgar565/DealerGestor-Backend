@@ -11,6 +11,8 @@ import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
 import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,53 +37,92 @@ public class CompanyUserServiceImpl implements CompanyUserService{
 
     @Override
     public List<CompanyUser> findAllCompanyUsers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CompanyUserEntity currentUser = (CompanyUserEntity) authentication.getPrincipal();
+
         return companyUserRepository.findAll().stream()
+                .filter(user -> currentUser.getRole() == CompanyUserEntity.Role.SUPER_ADMIN || user.getRole() != CompanyUserEntity.Role.SUPER_ADMIN)
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CompanyUser findCompanyUserById(Long id) {
-        CompanyUserEntity e = companyUserRepository.findById(id)
+        CompanyUserEntity requested = companyUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CompanyUser not found"));
-        return modelMapperUtil.toModel(e);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CompanyUserEntity currentUser = (CompanyUserEntity) authentication.getPrincipal();
+
+        if (requested.getRole() == CompanyUserEntity.Role.SUPER_ADMIN){
+            throw new RuntimeException("CompanyUser not found");
+        }
+
+        return modelMapperUtil.toModel(requested);
     }
 
     @Override
     public CompanyUser saveCompanyUser(CompanyUser companyUser) {
-        CompanyUserEntity companyUserEntity = new CompanyUserEntity();
-        companyUserEntity.setUsername(companyUser.getUsername());
-        // Hashear contraseña
-        companyUserEntity.setPassword(passwordEncoder.encode(companyUser.getPassword()));
-        companyUserEntity.setRole(CompanyUserEntity.Role.valueOf(companyUser.getRole()));
-        companyUserEntity.setEnabled(true);
-        CompanyUserEntity saved = companyUserRepository.save(companyUserEntity);
-        return modelMapperUtil.toModel(saved);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CompanyUserEntity currentUser = (CompanyUserEntity) authentication.getPrincipal();
+
+        CompanyUserEntity.Role roleToCreate = CompanyUserEntity.Role.valueOf(companyUser.getRole());
+
+        if (roleToCreate == CompanyUserEntity.Role.SUPER_ADMIN &&
+                currentUser.getRole() != CompanyUserEntity.Role.SUPER_ADMIN) {
+            throw new RuntimeException("CompanyUser not found");
+        }
+
+        CompanyUserEntity entity = new CompanyUserEntity();
+        entity.setUsername(companyUser.getUsername());
+        entity.setPassword(passwordEncoder.encode(companyUser.getPassword()));
+        entity.setRole(roleToCreate);
+        entity.setEnabled(true);
+
+        return modelMapperUtil.toModel(companyUserRepository.save(entity));
     }
 
     @Override
     public CompanyUser updateCompanyUser(Long id, CompanyUser companyUser) {
-        CompanyUserEntity companyUserEntity = companyUserRepository.findById(id)
+        CompanyUserEntity entity = companyUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CompanyUser not found"));
 
-        companyUserEntity.setUsername(companyUser.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CompanyUserEntity currentUser = (CompanyUserEntity) authentication.getPrincipal();
 
-        if (companyUser.getPassword() != null) {
-            companyUserEntity.setPassword(passwordEncoder.encode(companyUser.getPassword()));
+        if (entity.getRole() == CompanyUserEntity.Role.SUPER_ADMIN &&
+                currentUser.getRole() != CompanyUserEntity.Role.SUPER_ADMIN) {
+            throw new RuntimeException("CompanyUser not found");
         }
 
-        companyUserEntity.setRole(CompanyUserEntity.Role.valueOf(companyUser.getRole()));
-        companyUserEntity.setEnabled(companyUser.isEnabled());
-        return modelMapperUtil.toModel(companyUserRepository.save(companyUserEntity));
+        entity.setUsername(companyUser.getUsername());
+
+        if (companyUser.getPassword() != null && !companyUser.getPassword().isBlank()) {
+            entity.setPassword(passwordEncoder.encode(companyUser.getPassword()));
+        }
+
+        entity.setRole(CompanyUserEntity.Role.valueOf(companyUser.getRole()));
+        entity.setEnabled(companyUser.isEnabled());
+
+        return modelMapperUtil.toModel(companyUserRepository.save(entity));
     }
+
 
     @Override
     public void deleteCompanyUser(Long id) {
-        companyUserRepository.deleteById(id);
+        companyUserRepository.findById(id).ifPresent(user -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CompanyUserEntity currentUser = (CompanyUserEntity) authentication.getPrincipal();
+
+            if (user.getRole() != CompanyUserEntity.Role.SUPER_ADMIN ||
+                    currentUser.getRole() == CompanyUserEntity.Role.SUPER_ADMIN) {
+                companyUserRepository.deleteById(id);
+            }
+        });
     }
 
     @Override
-    public CompanyUser findByUsername(String username){
+    public CompanyUser findByUsername(String username) {
         return modelMapperUtil.toModel(companyUserRepository.findByUsername(username));
     }
 }

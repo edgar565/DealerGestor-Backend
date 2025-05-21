@@ -13,6 +13,7 @@ import com.dealergestor.dealergestorbackend.domain.repository.*;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,15 +25,15 @@ public class RepairServiceImpl implements RepairService{
     private final AppointmentRepository appointmentRepository;
     private final CompanyUserRepository companyUserRepository;
     private final ModelMapperUtil modelMapperUtil;
-    private final PartRepository partRepository;
+    private final AccidentRepository accidentRepository;
 
-    public RepairServiceImpl(RepairRepository repairRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil, PartRepository partRepository) {
+    public RepairServiceImpl(RepairRepository repairRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, CompanyUserRepository companyUserRepository, ModelMapperUtil modelMapperUtil, AccidentRepository accidentRepository) {
         this.repairRepository = repairRepository;
         this.vehicleRepository = vehicleRepository;
         this.appointmentRepository = appointmentRepository;
         this.companyUserRepository = companyUserRepository;
         this.modelMapperUtil = modelMapperUtil;
-        this.partRepository = partRepository;
+        this.accidentRepository = accidentRepository;
     }
 
     @Override
@@ -55,9 +56,11 @@ public class RepairServiceImpl implements RepairService{
     @Override
     public Repair findRepairById(Long id) {
         RepairEntity repairEntity = repairRepository.findById(id)
+                .filter(RepairEntity::isActive)
                 .orElseThrow(() -> new RuntimeException("Repair not found"));
         return modelMapperUtil.toModel(repairEntity);
     }
+
 
     @Override
     public Repair saveRepair(Repair model) {
@@ -66,9 +69,11 @@ public class RepairServiceImpl implements RepairService{
 
         boolean hasRepair = repairRepository.existsByVehicle(vehicleEntity);
         boolean hasAppointment = appointmentRepository.existsByVehicle(vehicleEntity);
+        boolean hasAccident = accidentRepository.existsByVehicle(vehicleEntity);
 
-        if (hasRepair || hasAppointment) {
-            throw new RuntimeException("This vehicle already has an active appointment or repair.");
+
+        if (hasRepair || hasAppointment || hasAccident) {
+            throw new RuntimeException("This vehicle already has an active appointment, repair, or accident.");
         }
 
         CompanyUserEntity operator = companyUserRepository.findById(model.getOperator().getCompanyUserId())
@@ -80,6 +85,7 @@ public class RepairServiceImpl implements RepairService{
         repairEntity.setActive(true);
         repairEntity.setVehicle(vehicleEntity);
         repairEntity.setOperator(operator);
+        repairEntity.setPartEntity(new ArrayList<>());
         return modelMapperUtil.toModel(repairRepository.save(repairEntity));
     }
 
@@ -88,19 +94,12 @@ public class RepairServiceImpl implements RepairService{
         RepairEntity repairEntity = repairRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Repair not found"));
 
-        VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
-
         CompanyUserEntity operator = companyUserRepository.findById(model.getOperator().getCompanyUserId())
                 .orElseThrow(() -> new RuntimeException("Operator not found"));
 
-        PartEntity partEntity = partRepository.findById(model.getPart().getPartId())
-                .orElseThrow(() -> new RuntimeException("Part not found"));
 
         repairEntity.setStatus(RepairEntity.Status.valueOf(model.getStatus().toUpperCase()));
         repairEntity.setDate(model.getDate());
-        repairEntity.setVehicle(vehicleEntity);
-        repairEntity.setPartEntity(partEntity);
         repairEntity.setOperator(operator);
 
         return modelMapperUtil.toModel(repairRepository.save(repairEntity));

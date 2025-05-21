@@ -9,8 +9,6 @@ package com.dealergestor.dealergestorbackend.controller.ViewModel;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
 @AllArgsConstructor
@@ -19,8 +17,6 @@ import java.time.LocalDate;
 public class RepairPostViewModel {
 
     private String status;
-    private LocalDate date;
-    private PartViewModel partViewModel;
-    private CompanyUserViewModel operator;
-    private VehiclePostViewModel vehicleViewModel;
+    private Long operatorId;
+    private Long  vehicleId;
 }

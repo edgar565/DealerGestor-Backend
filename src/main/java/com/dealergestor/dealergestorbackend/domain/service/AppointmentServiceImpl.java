@@ -10,6 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.service;
 import com.dealergestor.dealergestorbackend.domain.entity.AppointmentEntity;
 import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import com.dealergestor.dealergestorbackend.domain.model.Appointment;
+import com.dealergestor.dealergestorbackend.domain.repository.AccidentRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.AppointmentRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.RepairRepository;
 import com.dealergestor.dealergestorbackend.domain.repository.VehicleRepository;
@@ -27,18 +28,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final VehicleRepository vehicleRepository;
     private final RepairRepository repairRepository;
     private final ModelMapperUtil modelMapperUtil;
+    private final AccidentRepository accidentRepository;
+
 
     public AppointmentServiceImpl(
             AppointmentRepository appointmentRepository,
             VehicleRepository vehicleRepository,
             RepairRepository repairRepository,
-            ModelMapperUtil modelMapperUtil
+            ModelMapperUtil modelMapperUtil,
+            AccidentRepository accidentRepository
 
     ) {
         this.appointmentRepository = appointmentRepository;
         this.vehicleRepository = vehicleRepository;
         this.repairRepository = repairRepository;
         this.modelMapperUtil = modelMapperUtil;
+        this.accidentRepository = accidentRepository;
     }
 
     @Override
@@ -68,11 +73,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        boolean hasAppointment = appointmentRepository.existsByVehicle(vehicleEntity);
         boolean hasRepair = repairRepository.existsByVehicle(vehicleEntity);
+        boolean hasAppointment = appointmentRepository.existsByVehicle(vehicleEntity);
+        boolean hasAccident = accidentRepository.existsByVehicle(vehicleEntity);
 
-        if (hasAppointment || hasRepair) {
-            throw new RuntimeException("This vehicle already has an active appointment or repair.");
+
+        if (hasRepair || hasAppointment || hasAccident) {
+            throw new RuntimeException("This vehicle already has an active appointment, repair, or accident.");
         }
 
         AppointmentEntity appointment = new AppointmentEntity();

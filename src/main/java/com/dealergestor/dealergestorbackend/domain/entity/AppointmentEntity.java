@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,7 +39,8 @@ public class AppointmentEntity {
         LARGA_DURACION
     }
 
-    @OneToOne
-    @JoinColumn(name = "vehicle_id")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "vehicle_id", nullable = true)
+    @JsonIgnore
     private VehicleEntity vehicle;
 }

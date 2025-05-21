@@ -13,12 +13,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,8 +86,15 @@ public class VehicleController {
     })
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
-    public ResponseEntity<VehicleViewModel> saveVehicle(VehiclePostViewModel vehicleViewModel)  {
+    public ResponseEntity<VehicleViewModel> saveVehicle(
+            @Parameter(description = "Datos del vehículo con su cliente", required = true,
+                    content = @Content(schema = @Schema(implementation = VehiclePostViewModel.class)))
+            @Valid @RequestBody VehiclePostViewModel vehicleViewModel) {
+
         System.out.println("Datos recibidos: " + vehicleViewModel);
+
+        // Buscar el cliente existente por ID
+        Client client = dealerGestorBackendManager.findClientById(vehicleViewModel.getClientViewModelId());
 
         if (vehicleViewModel == null) {
             System.out.println("vehiclePostViewModel es null");
@@ -95,7 +102,7 @@ public class VehicleController {
             System.out.println("License Plate: " + vehicleViewModel.getLicensePlate());
             System.out.println("Brand: " + vehicleViewModel.getBrand());
             System.out.println("Model: " + vehicleViewModel.getModel());
-            System.out.println("Client View Model: " + vehicleViewModel.getClientViewModel());
+            System.out.println("Client: " + client);
         }
 
         // Crear el vehículo y asociarlo con el cliente
@@ -103,15 +110,14 @@ public class VehicleController {
         vehicle.setLicensePlate(vehicleViewModel.getLicensePlate());
         vehicle.setBrand(vehicleViewModel.getBrand());
         vehicle.setModel(vehicleViewModel.getModel());
-
-        Client client = new Client();
-        client.setName(vehicleViewModel.getClientViewModel().getName());
-        client.setPhone(vehicleViewModel.getClientViewModel().getPhone());
-
         vehicle.setClient(client);
 
-        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(dealerGestorBackendManager.saveVehicle(vehicle)));
+        // Guardar el vehículo en la base de datos
+        Vehicle savedVehicle = dealerGestorBackendManager.saveVehicle(vehicle);
+
+        return ResponseEntity.ok(viewModelMapperUtil.toViewModel(savedVehicle));
     }
+
 
     @Operation(summary = "Update existing vehicle", description = "Updates details of an existing vehicle by its ID.")
     @ApiResponses(value = {
@@ -120,7 +126,7 @@ public class VehicleController {
     })
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<VehicleViewModel> updateVehicle(@PathVariable Long id, @RequestBody VehiclePostViewModel vehicleViewModel) {
+    public ResponseEntity<VehicleViewModel> updateVehicle(@PathVariable Long id, @RequestBody VehicleViewModel vehicleViewModel) {
         return ResponseEntity.ok(viewModelMapperUtil.toViewModel(
                 dealerGestorBackendManager.updateVehicle(id, viewModelMapperUtil.toModel(vehicleViewModel))));
     }

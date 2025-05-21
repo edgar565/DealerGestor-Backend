@@ -10,6 +10,7 @@ package com.dealergestor.dealergestorbackend.domain.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -21,7 +22,8 @@ public class Repair {
     private Long repairId;
     private String status;
     private LocalDate date;
-    private Part part;
+    private List<Part> part;
     private CompanyUser operator;
     private Vehicle vehicle;
+    private boolean isActive;
 }

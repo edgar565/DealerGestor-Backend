@@ -20,5 +20,5 @@ public class AppointmentPostViewModel {
 
     private LocalDateTime dateTime;
     private String task;
-    private VehicleViewModel vehicleViewModel;
+    private Long vehicleId;
 }

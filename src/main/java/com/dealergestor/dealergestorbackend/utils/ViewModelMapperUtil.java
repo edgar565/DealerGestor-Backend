@@ -42,8 +42,8 @@ public class ViewModelMapperUtil {
         RepairViewModel viewModel = new RepairViewModel();
         viewModel.setRepairId(repair.getRepairId());
         viewModel.setStatus(repair.getStatus());
-        viewModel.setDate(repair.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-        viewModel.setPartViewModel(toViewModel(repair.getPart()));
+        viewModel.setDate(repair.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        viewModel.setPartViewModel(repair.getPart().stream().findFirst().map(this::toViewModel).orElse(null));
         viewModel.setOperator(toViewModel(repair.getOperator()));
         return viewModel;
     }
@@ -113,9 +113,9 @@ public class ViewModelMapperUtil {
         AccidentViewModel viewModel = new AccidentViewModel();
         viewModel.setRepairId(accident.getRepairId());
         viewModel.setStatus(accident.getStatus());
-        viewModel.setDate(accident.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        viewModel.setDate(accident.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         viewModel.setOperator(toViewModel(accident.getOperator()));
-        viewModel.setPartViewModel(toViewModel(accident.getPart()));
+        viewModel.setPartViewModel(accident.getPart().stream().findFirst().map(this::toViewModel).orElse(null));
         viewModel.setInsuranceCompany(accident.getInsuranceCompany());
         viewModel.setLocation(accident.getLocation());
         return viewModel;
@@ -150,6 +150,14 @@ public class ViewModelMapperUtil {
         model.setBrand(vehicleViewModel.getBrand());
         return model;
     }
+    public Vehicle toModel(VehicleViewModel vehicleViewModel) {
+        Vehicle model = new Vehicle();
+        model.setVehicleId(vehicleViewModel.getVehicleId());
+        model.setLicensePlate(vehicleViewModel.getLicensePlate());
+        model.setModel(vehicleViewModel.getModel());
+        model.setBrand(vehicleViewModel.getBrand());
+        return model;
+    }
 
     public Client toModel(ClientPostViewModel clientViewModel) {
         Client model = new Client();
@@ -158,22 +166,9 @@ public class ViewModelMapperUtil {
         return model;
     }
 
-    public Repair toModel(RepairPostViewModel repairPostViewModel) {
-        Repair model = new Repair();
-        model.setStatus(repairPostViewModel.getStatus());
-        model.setDate(repairPostViewModel.getDate());
-        model.setPart(toModel(repairPostViewModel.getPartViewModel()));
-        model.setOperator(toModel(repairPostViewModel.getOperator()));
-        return model;
-    }
-
     public Accident toModel(AccidentPostViewModel accidentPostViewModel) {
         Accident model = new Accident();
         model.setStatus(accidentPostViewModel.getStatus());
-        model.setDate(accidentPostViewModel.getDate());
-        model.setPart(toModel(accidentPostViewModel.getPartViewModel()));
-        model.setOperator(toModel(accidentPostViewModel.getOperator()));
-        model.setVehicle(toModel(accidentPostViewModel.getVehicleViewModel()));
         model.setInsuranceCompany(accidentPostViewModel.getInsuranceCompany());
         model.setLocation(accidentPostViewModel.getLocation());
         return model;

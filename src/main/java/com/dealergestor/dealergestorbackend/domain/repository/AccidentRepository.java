@@ -8,10 +8,12 @@
 package com.dealergestor.dealergestorbackend.domain.repository;
 
 import com.dealergestor.dealergestorbackend.domain.entity.AccidentEntity;
+import com.dealergestor.dealergestorbackend.domain.entity.VehicleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccidentRepository extends JpaRepository<AccidentEntity, Long> {
 
+    boolean existsByVehicle(VehicleEntity vehicleEntity);
 }

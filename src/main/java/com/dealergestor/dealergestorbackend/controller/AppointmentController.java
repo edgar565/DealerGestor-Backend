@@ -10,10 +10,13 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AppointmentPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AppointmentViewModel;
+import com.dealergestor.dealergestorbackend.domain.model.Appointment;
+import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/appointments")
+@Tag(name = "Appointments", description = "Endpoints for managing appointments")
 public class AppointmentController {
 
     private final DealerGestorBackendManager dealerGestorBackendManager;
@@ -81,10 +85,16 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
     public AppointmentViewModel saveAppointment(@RequestBody AppointmentPostViewModel appointmentPostViewModel) {
+
+        Vehicle vehicle = dealerGestorBackendManager.findVehicleById(appointmentPostViewModel.getVehicleId());
+
+        Appointment appointment = new Appointment();
+        appointment.setTask(appointmentPostViewModel.getTask());
+        appointment.setDateTime(appointmentPostViewModel.getDateTime());
+        appointment.setVehicle(vehicle);
+
         return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.saveAppointment(
-                        viewModelMapperUtil.toModel(appointmentPostViewModel)
-                )
+                dealerGestorBackendManager.saveAppointment(appointment)
         );
     }
 
@@ -96,11 +106,15 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PutMapping("/update/{id}")
     public AppointmentViewModel updateAppointment(@PathVariable Long id, @RequestBody AppointmentPostViewModel updatedAppointment) {
+
+        Vehicle vehicle = dealerGestorBackendManager.findVehicleById(updatedAppointment.getVehicleId());
+
+        Appointment appointment = new Appointment();
+        appointment.setTask(updatedAppointment.getTask());
+        appointment.setDateTime(updatedAppointment.getDateTime());
+        appointment.setVehicle(vehicle);
         return viewModelMapperUtil.toViewModel(
-                dealerGestorBackendManager.updateAppointment(
-                        id,
-                        viewModelMapperUtil.toModel(updatedAppointment)
-                )
+                dealerGestorBackendManager.updateAppointment(id, appointment)
         );
     }
 

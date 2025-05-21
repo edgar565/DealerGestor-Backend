@@ -1,7 +1,10 @@
 package com.dealergestor.dealergestorbackend.controller;
 
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.PartPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.PartViewModel;
+import com.dealergestor.dealergestorbackend.domain.model.Part;
+import com.dealergestor.dealergestorbackend.domain.model.Repair;
 import com.dealergestor.dealergestorbackend.utils.ViewModelMapperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,8 +55,18 @@ public class PartController {
     @ApiResponse(responseCode = "201", description = "Part created successfully")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
     @PostMapping("/save")
-    public PartViewModel savePart(@RequestBody PartViewModel part) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.savePart(viewModelMapperUtil.toModel(part)));
+    public PartViewModel savePart(@RequestBody PartPostViewModel partPostViewModel) {
+
+        Repair repair = dealerGestorBackendManager.findRepairById(partPostViewModel.getRepairId());
+
+        Part part = new Part();
+        part.setKeychain(partPostViewModel.getKeychain());
+        part.setNumberOrder(partPostViewModel.getNumberOrder());
+        part.setWork(partPostViewModel.getWork());
+        part.setMaterials(partPostViewModel.getMaterials());
+        part.setRepair(repair);
+
+        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.savePart(part));
     }
 
     @Operation(summary = "Update a part", description = "Update an existing part by ID")
@@ -64,7 +77,13 @@ public class PartController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST', 'MECHANIC')")
     @PutMapping("/updateRepair/{id}")
     public PartViewModel updatePart(@PathVariable Long id, @RequestBody PartViewModel updatedPart) {
-        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updatePart(id, viewModelMapperUtil.toModel(updatedPart)));
+
+        Repair repair = dealerGestorBackendManager.findRepairById(updatedPart.getRepairId());
+        Part part = viewModelMapperUtil.toModel(updatedPart);
+
+        part.setRepair(repair);
+
+        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.updatePart(id, part));
     }
 
     @Operation(summary = "Delete a part", description = "Delete a part by its ID")

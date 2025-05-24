@@ -150,7 +150,6 @@ public class ModelMapperUtil {
         model.setPrimaryColor(companyConfigurationEntity.getPrimaryColor());
         model.setSecondaryColor(companyConfigurationEntity.getSecondaryColor());
         model.setLogoPath(companyConfigurationEntity.getLogoPath());
-        model.setWhatsappApiKey(companyConfigurationEntity.getWhatsappApiKey());
         return model;
     }
 }

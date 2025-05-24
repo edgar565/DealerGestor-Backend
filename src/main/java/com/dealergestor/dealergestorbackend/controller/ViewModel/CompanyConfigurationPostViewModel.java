@@ -11,5 +11,4 @@ public class CompanyConfigurationPostViewModel {
     private String companyName;
     private String primaryColor;
     private String secondaryColor;
-    private String whatsappApiKey;
 }

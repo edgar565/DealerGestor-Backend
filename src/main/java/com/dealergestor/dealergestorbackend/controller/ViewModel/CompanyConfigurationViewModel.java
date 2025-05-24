@@ -20,5 +20,4 @@ public class CompanyConfigurationViewModel {
     private String primaryColor;
     private String secondaryColor;
     private String logoPath;
-    private String whatsappApiKey;
 }

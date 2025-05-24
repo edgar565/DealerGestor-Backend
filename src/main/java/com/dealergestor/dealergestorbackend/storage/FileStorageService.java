@@ -1,18 +1,33 @@
-/**
- * Proyecto: DealerGestor-Backend
- * Autor: EDGAR SÁNCHEZ NICOLAU
- * Derechos de Autor © 2025
- * Todos los derechos reservados.
- **/
-
 package com.dealergestor.dealergestorbackend.storage;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileStorageService {
+import java.io.File;
+import java.io.IOException;
 
-    /**
-     * Almacena el archivo en el bucket/ruta indicada y devuelve la URL pública
-//     */
-//    String storeFile(MultipartFile file, String targetFolder);
+@Service
+public class FileStorageService {
+
+    private final String STORAGE_PATH = "/dealergestor/company-logos/";
+
+    public String storeFile(MultipartFile file, String subfolder) {
+        try {
+            String folderPath = STORAGE_PATH + subfolder;
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            String filename = file.getOriginalFilename();
+            String fullPath = folderPath + "/" + filename;
+
+            File destinationFile = new File(fullPath);
+            file.transferTo(destinationFile);
+
+            return "/company-logos/" + subfolder + "/" + filename; // ruta relativa para usarla como URL
+        } catch (IOException e) {
+            throw new RuntimeException("Error storing file", e);
+        }
+    }
 }

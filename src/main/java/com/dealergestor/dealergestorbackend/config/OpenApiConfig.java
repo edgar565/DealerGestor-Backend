@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
                 description = "Documentación de la API de DealerGestor"
         ),
         security = @SecurityRequirement(name = "bearerAuth"),
-        servers = @Server(url = "/", description = "Servidor local")
+        servers = @Server(url = "/", description = "Servidor de DealerGestor")
 )
 @SecuritySchemes({
         @SecurityScheme(

@@ -35,7 +35,4 @@ public class CompanyConfigurationEntity {
 
     @Column(name="logo_path")
     private String logoPath; // ruta en S3 o carpeta local
-
-    @Column(name="whatsapp_api_key")
-    private String whatsappApiKey;
 }

@@ -135,7 +135,6 @@ public class ViewModelMapperUtil {
         viewModel.setPrimaryColor(company.getPrimaryColor());
         viewModel.setSecondaryColor(company.getSecondaryColor());
         viewModel.setLogoPath(company.getLogoPath());
-        viewModel.setWhatsappApiKey(company.getWhatsappApiKey());
         return viewModel;
     }
 
@@ -264,7 +263,6 @@ public class ViewModelMapperUtil {
         model.setNameCompany(companyConfigurationPostViewModel.getCompanyName());
         model.setPrimaryColor(companyConfigurationPostViewModel.getPrimaryColor());
         model.setSecondaryColor(companyConfigurationPostViewModel.getSecondaryColor());
-        model.setWhatsappApiKey(companyConfigurationPostViewModel.getWhatsappApiKey());
         return model;
     }
 }

@@ -42,6 +42,6 @@ jobs:
             echo "jwt.expiration-ms=86400000" >> src/main/resources/application.properties
           
             ./gradlew build
-            docker-compose down
-            docker-compose up --build -d
+            sudo docker-compose down
+            sudo docker-compose up --build -d
           EOF

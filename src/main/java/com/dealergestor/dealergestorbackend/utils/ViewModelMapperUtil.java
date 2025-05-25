@@ -43,8 +43,9 @@ public class ViewModelMapperUtil {
         viewModel.setRepairId(repair.getRepairId());
         viewModel.setStatus(repair.getStatus());
         viewModel.setDate(repair.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        viewModel.setPartViewModel(repair.getPart().stream().findFirst().map(this::toViewModel).orElse(null));
-        viewModel.setOperator(toViewModel(repair.getOperator()));
+        viewModel.setPartId(repair.getPart().getFirst().getPartId());
+        viewModel.setVehicleViewModel(toViewModel(repair.getVehicle()));
+        viewModel.setOperator(repair.getOperator().getUsername());
         return viewModel;
     }
 
@@ -114,10 +115,11 @@ public class ViewModelMapperUtil {
         viewModel.setRepairId(accident.getRepairId());
         viewModel.setStatus(accident.getStatus());
         viewModel.setDate(accident.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        viewModel.setOperator(toViewModel(accident.getOperator()));
-        viewModel.setPartViewModel(accident.getPart().stream().findFirst().map(this::toViewModel).orElse(null));
+        viewModel.setOperator(accident.getOperator().getUsername());
+        viewModel.setPartId(accident.getPart().getFirst().getPartId());
         viewModel.setInsuranceCompany(accident.getInsuranceCompany());
         viewModel.setLocation(accident.getLocation());
+        viewModel.setVehicleViewModel(toViewModel(accident.getVehicle()));
         return viewModel;
     }
 

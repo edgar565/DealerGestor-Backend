@@ -42,9 +42,9 @@ public class VehicleController {
             @ApiResponse(responseCode = "404", description = "Vehicles not found")
     })
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
-    @GetMapping
-    public List<VehicleViewModel> findAllVehicles() {
-        return dealerGestorBackendManager.findAllVehicles()
+    @GetMapping("/client/{clientId}")
+    public List<VehicleViewModel> findAllVehiclesByClientId(@PathVariable Long clientId) {
+        return dealerGestorBackendManager.findAllVehiclesByClientId(clientId)
                 .stream()
                 .map(viewModelMapperUtil::toViewModel)
                 .collect(Collectors.toList());

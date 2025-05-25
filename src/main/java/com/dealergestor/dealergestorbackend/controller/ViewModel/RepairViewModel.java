@@ -19,7 +19,7 @@ public class RepairViewModel {
     private Long repairId;
     private String status;
     private String date;
-    private PartViewModel partViewModel;
-    private CompanyUserViewModel operator;
+    private Long partId;
+    private String operator;
     private VehicleViewModel vehicleViewModel;
 }

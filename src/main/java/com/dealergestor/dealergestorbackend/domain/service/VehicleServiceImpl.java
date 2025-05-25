@@ -31,8 +31,9 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public List<Vehicle> findAllVehicles() {
+    public List<Vehicle> findAllVehiclesByClientId(Long id) {
         return vehicleRepository.findAll().stream()
+                .filter(vehicleEntity -> vehicleEntity.getClientEntity().getClientId().equals(id))
                 .map(modelMapperUtil::toModel)
                 .collect(Collectors.toList());
     }

@@ -231,8 +231,8 @@ public class DealerGestorBackendManager {
     /**
      *  VEHICLE
     **/
-    public List<Vehicle> findAllVehicles() {
-        return vehicleService.findAllVehicles();
+    public List<Vehicle> findAllVehiclesByClientId(Long id) {
+        return vehicleService.findAllVehiclesByClientId(id);
     }
 
     public Vehicle findVehicleById(Long id) {

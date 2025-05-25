@@ -24,10 +24,14 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/vockey.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          ssh -i ~/.ssh/vockey.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd /home/ubuntu/DealerGestor-Backend
             git pull origin main
-          
+
+            # Cargar el secreto en variable antes de usarlo
+            JWT_SECRET="${{ secrets.JWT_SECRET }}"
+
+            # Regenerar application.properties
             echo "spring.application.name=DealerGestor-Backend" > src/main/resources/application.properties
             echo "spring.datasource.url=jdbc:postgresql://dealergestor-company-mavimotos-db.c5aqw408mx3r.us-east-1.rds.amazonaws.com:5432/dealergestor_company_mavimotos_db" >> src/main/resources/application.properties
             echo "spring.datasource.driver-class-name=org.postgresql.Driver" >> src/main/resources/application.properties
@@ -38,9 +42,9 @@ jobs:
             echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect" >> src/main/resources/application.properties
             echo "logging.level.org.springframework.security=DEBUG" >> src/main/resources/application.properties
             echo "logging.level.org.springframework.web=DEBUG" >> src/main/resources/application.properties
-            echo "jwt.secret=${{ secrets.JWT_SECRET }}" >> src/main/resources/application.properties
+            echo "jwt.secret=$JWT_SECRET" >> src/main/resources/application.properties
             echo "jwt.expiration-ms=86400000" >> src/main/resources/application.properties
-          
+
             ./gradlew build
             sudo docker-compose down
             sudo docker-compose up --build -d

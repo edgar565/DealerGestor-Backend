@@ -10,15 +10,10 @@ package com.dealergestor.dealergestorbackend.auth;
 import com.dealergestor.dealergestorbackend.auth.dto.AuthRequest;
 import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
 import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
-import com.dealergestor.dealergestorbackend.jwt.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")

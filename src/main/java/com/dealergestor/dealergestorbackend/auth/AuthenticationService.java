@@ -12,7 +12,7 @@ import com.dealergestor.dealergestorbackend.auth.dto.AuthResponse;
 import com.dealergestor.dealergestorbackend.auth.dto.RegisterRequest;
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
-import com.dealergestor.dealergestorbackend.jwt.JwtService;
+import com.dealergestor.dealergestorbackend.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

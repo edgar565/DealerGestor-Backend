@@ -1,4 +1,4 @@
-package com.dealergestor.dealergestorbackend.jwt;
+package com.dealergestor.dealergestorbackend.security;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import io.jsonwebtoken.*;
@@ -7,13 +7,16 @@ import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@Component
+@Service
 public class JwtService {
+
+    public JwtService() {
+    }
 
     private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 

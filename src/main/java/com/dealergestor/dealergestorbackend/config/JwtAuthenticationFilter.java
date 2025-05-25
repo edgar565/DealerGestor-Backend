@@ -2,7 +2,7 @@ package com.dealergestor.dealergestorbackend.config;
 
 import com.dealergestor.dealergestorbackend.domain.entity.CompanyUserEntity;
 import com.dealergestor.dealergestorbackend.domain.repository.CompanyUserRepository;
-import com.dealergestor.dealergestorbackend.jwt.JwtService;
+import com.dealergestor.dealergestorbackend.security.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

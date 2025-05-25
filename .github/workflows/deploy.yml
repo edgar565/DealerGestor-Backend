@@ -16,15 +16,15 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VOCKEY_PEM }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/vockey.pem
+          chmod 600 ~/.ssh/vockey.pem
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          ssh -i ~/.ssh/vockey.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
             cd /home/ec2-user/DealerGestor-Backend
-            git pull origin main
+            git pull origin master
 
             echo "spring.application.name=DealerGestor-Backend" > src/main/resources/application.properties
             echo "spring.datasource.url=jdbc:postgresql://dealergestor-company-mavimotos-db.c5aqw408mx3r.us-east-1.rds.amazonaws.com:5432/dealergestor_company_mavimotos_db" >> src/main/resources/application.properties

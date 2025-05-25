@@ -18,9 +18,9 @@ jobs:
           mkdir -p ~/.ssh
           printf "%s" "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/vockey.pem
           chmod 600 ~/.ssh/vockey.pem
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
-
+          ssh-keyscan -H ${{ secrets.EC2_SSH_KEY }} >> ~/.ssh/known_hosts
+      - name: Check SSH key secret length
+        run: echo "${{ secrets.VOCKEY_PEM }}" | wc -c
       - name: Deploy to EC2
         run: |
           ssh -i ~/.ssh/vockey.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF

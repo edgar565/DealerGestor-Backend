@@ -8,6 +8,8 @@
 package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.*;
+import com.dealergestor.dealergestorbackend.domain.model.Appointment;
+import com.dealergestor.dealergestorbackend.domain.model.Client;
 import com.dealergestor.dealergestorbackend.domain.model.Repair;
 import com.dealergestor.dealergestorbackend.domain.repository.*;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,6 +64,21 @@ public class RepairServiceImpl implements RepairService{
         return modelMapperUtil.toModel(repairEntity);
     }
 
+    @Override
+    public List<Repair> findRepairByLicensePlate(String licensePlate) {
+        return repairRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getVehicle().getLicensePlate(), licensePlate))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
+
+    @Override
+    public List<Repair> findRepairByKeychain(String keychain) {
+        return repairRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getPartEntity().getFirst().getKeychain(), keychain))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
 
     @Override
     public Repair saveRepair(Repair model) {

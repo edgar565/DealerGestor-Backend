@@ -1,6 +1,7 @@
 package com.dealergestor.dealergestorbackend.controller;
 
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.AppointmentViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairViewModel;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
@@ -70,6 +71,30 @@ public class RepairController {
             @Parameter(description = "ID of the repair to retrieve", required = true)
             @PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findRepairById(id));
+    }
+
+    @Operation(summary = "Get all repairs by LicensePlate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repairs found successfully"),
+            @ApiResponse(responseCode = "404", description = "Repairs not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/vehicle/{licensePlate}")
+    @ResponseBody
+    public List<RepairViewModel> findRepairByLicensePlate(@PathVariable String licensePlate) {
+        return dealerGestorBackendManager.findRepairByLicensePlate(licensePlate).stream().map(viewModelMapperUtil::toViewModel).toList();
+    }
+
+    @Operation(summary = "Get all repairs by Keychain")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repairs found successfully"),
+            @ApiResponse(responseCode = "404", description = "Repairs not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/keychain/{keychain}")
+    @ResponseBody
+    public List<RepairViewModel> findRepairByKeychain(@PathVariable String keychain) {
+        return dealerGestorBackendManager.findRepairByKeychain(keychain).stream().map(viewModelMapperUtil::toViewModel).toList();
     }
 
     @Operation(summary = "Create a new repair", description = "Creates a new repair record.")

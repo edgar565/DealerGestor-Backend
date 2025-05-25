@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +59,30 @@ public class AccidentServiceImpl implements AccidentService {
                 .filter(AccidentEntity::isActive)
                 .orElseThrow(() -> new RuntimeException("Accident not found"));
         return modelMapperUtil.toModel(accidentEntity);
+    }
+
+    @Override
+    public List<Accident> findAccidentByLicensePlate(String licensePlate) {
+        return accidentRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getVehicle().getLicensePlate(), licensePlate))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
+
+    @Override
+    public List<Accident> findAccidentByKeychain(String keychain) {
+        return accidentRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getPartEntity().getFirst().getKeychain(), keychain))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
+
+    @Override
+    public List<Accident> findAccidentByInsuranceCompany(String insuranceCompany) {
+        return accidentRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getInsuranceCompany(), insuranceCompany))
+                .map(modelMapperUtil::toModel)
+                .toList();
     }
 
     @Override

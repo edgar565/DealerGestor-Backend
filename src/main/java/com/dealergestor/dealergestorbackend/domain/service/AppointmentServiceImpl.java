@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> findAppointmentByLicensePlate(String licensePlate) {
+        return appointmentRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getVehicle().getLicensePlate(), licensePlate))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
+
+    @Override
+    public List<Appointment> findAppointmentByClientName(String name) {
+        return appointmentRepository.findAll().stream()
+                .filter(a -> Objects.equals(a.getVehicle().getClientEntity().getName(), name))
+                .map(modelMapperUtil::toModel)
+                .toList();
+    }
+
+    @Override
     public Appointment saveAppointment(Appointment model) {
         VehicleEntity vehicleEntity = vehicleRepository.findById(model.getVehicle().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
@@ -109,4 +126,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
     }
+
+
 }

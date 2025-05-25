@@ -61,6 +61,18 @@ public class ClientController {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findClientById(id));
     }
 
+    @Operation(summary = "Get a client by name", description = "Returns the client with the specified name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Client found"),
+            @ApiResponse(responseCode = "404", description = "Client not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/{name}")
+    @ResponseBody
+    public ClientViewModel findClientByName(@PathVariable String name) {
+        return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findClientByName(name));
+    }
+
     @Operation(summary = "Create a new client", description = "Registers a new client in the system")
     @ApiResponse(responseCode = "201", description = "Client created successfully")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")

@@ -19,4 +19,6 @@ public interface AppointmentService {
     Appointment saveAppointment(Appointment request);
     Appointment updateAppointment(Long id, Appointment request);
     void deleteAppointment(Long id);
+    List<Appointment> findAppointmentByLicensePlate(String licensePlate);
+    List<Appointment> findAppointmentByClientName(String name);
 }

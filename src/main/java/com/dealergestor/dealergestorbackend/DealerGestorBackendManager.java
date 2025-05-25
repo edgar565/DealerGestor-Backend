@@ -7,12 +7,14 @@
 
 package com.dealergestor.dealergestorbackend;
 
+import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentViewModel;
 import com.dealergestor.dealergestorbackend.domain.model.*;
 import com.dealergestor.dealergestorbackend.domain.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -55,6 +57,18 @@ public class DealerGestorBackendManager {
         return accidentService.findAccidentById(id);
     }
 
+    public List<Accident> findAccidentByLicensePlate(String licensePlate) {
+        return accidentService.findAccidentByLicensePlate(licensePlate);
+    }
+
+    public List<Accident> findAccidentByKeychain(String keychain) {
+        return accidentService.findAccidentByKeychain(keychain);
+    }
+
+    public List<Accident> findAccidentByInsuranceCompany(String insuranceCompany) {
+        return accidentService.findAccidentByInsuranceCompany(insuranceCompany);
+    }
+
     public Accident saveAccident(Accident accident) {
         return accidentService.saveAccident(accident);
     }
@@ -81,6 +95,14 @@ public class DealerGestorBackendManager {
 
     public Appointment findAppointmentById(Long id) {
         return appointmentService.findAppointmentById(id);
+    }
+
+    public List<Appointment> findAppointmentByLicensePlate(String licensePlate) {
+        return appointmentService.findAppointmentByLicensePlate(licensePlate);
+    }
+
+     public List<Appointment> findAppointmentByClientName(String name) {
+        return appointmentService.findAppointmentByClientName(name);
     }
 
     public Appointment saveAppointment(Appointment appointment) {
@@ -213,6 +235,14 @@ public class DealerGestorBackendManager {
 
     public Repair findRepairById(Long id) {
         return repairService.findRepairById(id);
+    }
+
+    public List<Repair> findRepairByLicensePlate(String licensePlate) {
+        return repairService.findRepairByLicensePlate(licensePlate);
+    }
+
+    public List<Repair> findRepairByKeychain(String keychain) {
+        return repairService.findRepairByKeychain(keychain);
     }
 
     public Repair saveRepair(Repair repair) {

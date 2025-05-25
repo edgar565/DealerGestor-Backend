@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.service;
 
+import com.dealergestor.dealergestorbackend.domain.model.Client;
 import com.dealergestor.dealergestorbackend.domain.model.Repair;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface RepairService {
     Repair saveRepair(Repair request);
     Repair updateRepair(Long id, Repair request);
     void deleteRepair(Long id);
+    List<Repair> findRepairByLicensePlate(String licensePlate);
+    List<Repair> findRepairByKeychain(String keychain);
 }

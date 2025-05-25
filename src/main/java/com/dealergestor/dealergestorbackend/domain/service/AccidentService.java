@@ -14,9 +14,12 @@ import java.util.List;
 public interface AccidentService {
 
     List<Accident> findAllAccidents();
-    public List<Accident> findAllAccidentsActive();
+    List<Accident> findAllAccidentsActive();
     Accident findAccidentById(Long id);
     Accident saveAccident(Accident request);
     Accident updateAccident(Long id, Accident request);
     void deleteAccident(Long id);
+    List<Accident> findAccidentByLicensePlate(String licensePlate);
+    List<Accident> findAccidentByKeychain(String keychain);
+    List<Accident> findAccidentByInsuranceCompany(String insuranceCompany);
 }

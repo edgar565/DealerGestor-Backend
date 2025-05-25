@@ -10,6 +10,7 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentViewModel;
+import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairViewModel;
 import com.dealergestor.dealergestorbackend.domain.model.Accident;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
 import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
@@ -75,6 +76,42 @@ public class AccidentController {
     @ResponseBody
     public AccidentViewModel findAccidentById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findAccidentById(id));
+    }
+
+    @Operation(summary = "Get all repairs by LicensePlate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repairs found successfully"),
+            @ApiResponse(responseCode = "404", description = "Repairs not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/vehicle/{licensePlate}")
+    @ResponseBody
+    public List<AccidentViewModel> findAccidentByLicensePlate(@PathVariable String licensePlate) {
+        return dealerGestorBackendManager.findAccidentByLicensePlate(licensePlate).stream().map(viewModelMapperUtil::toViewModel).toList();
+    }
+
+    @Operation(summary = "Get all repairs by Keychain")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repairs found successfully"),
+            @ApiResponse(responseCode = "404", description = "Repairs not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/keychain/{keychain}")
+    @ResponseBody
+    public List<AccidentViewModel> findAccidentByKeychain(@PathVariable String keychain) {
+        return dealerGestorBackendManager.findAccidentByKeychain(keychain).stream().map(viewModelMapperUtil::toViewModel).toList();
+    }
+
+    @Operation(summary = "Get all repairs by Keychain")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Repairs found successfully"),
+            @ApiResponse(responseCode = "404", description = "Repairs not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/insuranceCompany/{insuranceCompany}")
+    @ResponseBody
+    public List<AccidentViewModel> findAccidentByInsuranceCompany(@PathVariable String insuranceCompany) {
+        return dealerGestorBackendManager.findAccidentByInsuranceCompany(insuranceCompany).stream().map(viewModelMapperUtil::toViewModel).toList();
     }
 
     @Operation(summary = "Create a new accident")

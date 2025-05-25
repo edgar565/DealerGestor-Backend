@@ -65,7 +65,7 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
-    @Operation(summary = "Get an appointment by ID")
+    @Operation(summary = "Get a appointment by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Appointment found successfully"),
             @ApiResponse(responseCode = "404", description = "Appointment not found")
@@ -75,6 +75,30 @@ public class AppointmentController {
     @ResponseBody
     public AppointmentViewModel findAppointmentById(@PathVariable Long id) {
         return viewModelMapperUtil.toViewModel(dealerGestorBackendManager.findAppointmentById(id));
+    }
+
+    @Operation(summary = "Get all appointment by LicensePlate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found successfully"),
+            @ApiResponse(responseCode = "404", description = "Appointments not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/vehicle/{licensePlate}")
+    @ResponseBody
+    public List<AppointmentViewModel> findAppointmentByLicensePlate(@PathVariable String licensePlate) {
+        return dealerGestorBackendManager.findAppointmentByLicensePlate(licensePlate).stream().map(viewModelMapperUtil::toViewModel).toList();
+    }
+
+    @Operation(summary = "Get all appointment by ClientName")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found successfully"),
+            @ApiResponse(responseCode = "404", description = "Appointments not found")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'RECEPTIONIST')")
+    @GetMapping("/client/{clientName}")
+    @ResponseBody
+    public List<AppointmentViewModel> findAppointmentByClientName(@PathVariable String clientName) {
+        return dealerGestorBackendManager.findAppointmentByClientName(clientName).stream().map(viewModelMapperUtil::toViewModel).toList();
     }
 
     @Operation(summary = "Create a new appointment")

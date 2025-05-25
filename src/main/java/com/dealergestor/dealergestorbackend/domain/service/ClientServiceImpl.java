@@ -8,6 +8,7 @@
 package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.ClientEntity;
+import com.dealergestor.dealergestorbackend.domain.model.Appointment;
 import com.dealergestor.dealergestorbackend.domain.model.Client;
 import com.dealergestor.dealergestorbackend.domain.repository.ClientRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

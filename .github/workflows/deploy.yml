@@ -16,18 +16,18 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          printf "%s" "${{ secrets.VOCKEY_PEM }}" > ~/.ssh/vockey.pem
+          cat <<EOF > ~/.ssh/vockey.pem
+          ${{ secrets.VOCKEY_PEM }}
+          EOF
           chmod 600 ~/.ssh/vockey.pem
-          
-          echo "Adding host to known_hosts..."
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
           ssh -i ~/.ssh/vockey.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
-            cd /home/ec2-user/DealerGestor-Backend
-            git pull origin master
-
+            cd /home/ubuntu/DealerGestor-Backend
+            git pull origin main
+          
             echo "spring.application.name=DealerGestor-Backend" > src/main/resources/application.properties
             echo "spring.datasource.url=jdbc:postgresql://dealergestor-company-mavimotos-db.c5aqw408mx3r.us-east-1.rds.amazonaws.com:5432/dealergestor_company_mavimotos_db" >> src/main/resources/application.properties
             echo "spring.datasource.driver-class-name=org.postgresql.Driver" >> src/main/resources/application.properties
@@ -40,7 +40,7 @@ jobs:
             echo "logging.level.org.springframework.web=DEBUG" >> src/main/resources/application.properties
             echo "jwt.secret=${{ secrets.JWT_SECRET }}" >> src/main/resources/application.properties
             echo "jwt.expiration-ms=86400000" >> src/main/resources/application.properties
-
+          
             ./gradlew build
             docker-compose down
             docker-compose up --build -d

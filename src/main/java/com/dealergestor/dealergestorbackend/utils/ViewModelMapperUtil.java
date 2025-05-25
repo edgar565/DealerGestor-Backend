@@ -126,6 +126,8 @@ public class ViewModelMapperUtil {
         viewModel.setAppointmentId(appointment.getAppointmentId());
         viewModel.setDateTime(appointment.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         viewModel.setTask(appointment.getTask());
+        viewModel.setNameClient(appointment.getVehicle().getClient().getName());
+        viewModel.setLicensePlate(appointment.getVehicle().getLicensePlate());
         return viewModel;
     }
 

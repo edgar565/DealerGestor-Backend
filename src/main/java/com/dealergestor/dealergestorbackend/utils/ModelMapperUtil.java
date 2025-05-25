@@ -48,6 +48,7 @@ public class ModelMapperUtil {
         model.setAppointmentId(appointmentEntity.getAppointmentId());
         model.setDateTime(appointmentEntity.getDateTime());
         model.setTask(appointmentEntity.getTask().toString());
+        model.setVehicle(toModel(appointmentEntity.getVehicle()));
         return model;
     }
 

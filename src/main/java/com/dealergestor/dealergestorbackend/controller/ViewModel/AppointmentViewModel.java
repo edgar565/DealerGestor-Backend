@@ -19,4 +19,6 @@ public class AppointmentViewModel {
     private Long appointmentId;
     private String dateTime;
     private String task;
+    private String nameClient;
+    private String licensePlate;
 }

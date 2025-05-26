@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,8 +33,9 @@ public class ClientEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VehicleEntity> vehicleEntities;
+    @OneToMany(mappedBy = "client")
+    @JsonManagedReference
+    private List<VehicleEntity> vehicles;
 
     public ClientEntity(Long clientId, String name, String phone) {
         this.clientId = clientId;

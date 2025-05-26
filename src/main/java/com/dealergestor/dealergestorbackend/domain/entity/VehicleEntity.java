@@ -7,6 +7,7 @@
 
 package com.dealergestor.dealergestorbackend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,8 +40,8 @@ public class VehicleEntity {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnore
-    private ClientEntity clientEntity;
+    @JsonBackReference
+    private ClientEntity client;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepairEntity> repairs = new ArrayList<>();

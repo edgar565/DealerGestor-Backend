@@ -41,7 +41,7 @@ public class Initializer {
             defaultConfig.setNameCompany("DealerGestor");
             defaultConfig.setPrimaryColor("#BD1522");
             defaultConfig.setSecondaryColor("#6f6f6f");
-            defaultConfig.setLogoPath("/assets/default-logo.png");
+            defaultConfig.setLogoPath("public/DealerGestor-logo_edited.jpg");
 
             configurationRepository.save(defaultConfig);
             System.out.println("✅ Default company configuration created in @PostConstruct");

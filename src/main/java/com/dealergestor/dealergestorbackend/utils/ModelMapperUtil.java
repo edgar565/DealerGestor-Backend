@@ -22,7 +22,7 @@ public class ModelMapperUtil {
         model.setClientId(clientEntity.getClientId());
         model.setName(clientEntity.getName());
         model.setPhone(clientEntity.getPhone());
-        model.setVehicles(clientEntity.getVehicleEntities()
+        model.setVehicles(clientEntity.getVehicles()
                 .stream().map(this::toModel)
                 .collect(Collectors.toList()));
         return model;

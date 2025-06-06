@@ -23,7 +23,7 @@ public class EntityMapperUtil {
         entity.setModel(model.getModel());
 
         if (model.getClient() != null) {
-            entity.setClientEntity(toClientEntity(model.getClient()));
+            entity.setClient(toClientEntity(model.getClient()));
         }
 
         if (model.getRepairs() != null) {
@@ -182,7 +182,7 @@ public class EntityMapperUtil {
         entity.setModel(model.getModel());
 
         if (model.getClient() != null) {
-            entity.setClientEntity(toClientEntity(model.getClient()));
+            entity.setClient(toClientEntity(model.getClient()));
         }
 
         return entity;

@@ -8,7 +8,6 @@
 package com.dealergestor.dealergestorbackend.domain.service;
 
 import com.dealergestor.dealergestorbackend.domain.entity.ClientEntity;
-import com.dealergestor.dealergestorbackend.domain.model.Appointment;
 import com.dealergestor.dealergestorbackend.domain.model.Client;
 import com.dealergestor.dealergestorbackend.domain.repository.ClientRepository;
 import com.dealergestor.dealergestorbackend.utils.ModelMapperUtil;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +56,7 @@ public class ClientServiceImpl implements ClientService{
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setName(model.getName());
         clientEntity.setPhone(model.getPhone());
-        clientEntity.setVehicleEntities(new ArrayList<>());
+        clientEntity.setVehicles(new ArrayList<>());
 
         return modelMapperUtil.toModel(clientRepository.save(clientEntity));
     }

@@ -80,7 +80,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> findAppointmentByClientName(String name) {
         return appointmentRepository.findAll().stream()
-                .filter(a -> Objects.equals(a.getVehicle().getClientEntity().getName(), name))
+                .filter(a -> Objects.equals(a.getVehicle().getClient().getName(), name))
                 .map(modelMapperUtil::toModel)
                 .toList();
     }

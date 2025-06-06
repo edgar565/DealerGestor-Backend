@@ -10,7 +10,6 @@ package com.dealergestor.dealergestorbackend.controller;
 import com.dealergestor.dealergestorbackend.DealerGestorBackendManager;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentPostViewModel;
 import com.dealergestor.dealergestorbackend.controller.ViewModel.AccidentViewModel;
-import com.dealergestor.dealergestorbackend.controller.ViewModel.RepairViewModel;
 import com.dealergestor.dealergestorbackend.domain.model.Accident;
 import com.dealergestor.dealergestorbackend.domain.model.CompanyUser;
 import com.dealergestor.dealergestorbackend.domain.model.Vehicle;
